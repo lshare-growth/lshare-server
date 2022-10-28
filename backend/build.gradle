@@ -1,0 +1,151 @@
+buildscript {
+    ext {
+        queryDslVersion = "5.0.0"
+        snippetsDir = file('build/generated-snippets')
+    }
+}
+
+plugins {
+    id 'org.springframework.boot' version '2.5.0'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
+    id 'com.ewerk.gradle.plugins.querydsl' version '1.0.10'
+    id 'org.asciidoctor.jvm.convert' version '3.3.2'
+}
+
+group = 'com.team33'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+    // springboot
+    implementation('org.springframework.boot:spring-boot-starter-web')
+    implementation('org.springframework.boot:spring-boot-starter')
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.8.6")
+
+    // jdbc
+    implementation("org.springframework.boot:spring-boot-starter-jdbc:2.5.14")
+
+    // jpa, querydsl
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    implementation("com.querydsl:querydsl-jpa:${queryDslVersion}")
+    implementation("com.querydsl:querydsl-apt:${queryDslVersion}")
+    implementation("com.querydsl:querydsl-core:${queryDslVersion}")
+
+    // jasypt
+    implementation('com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.4')
+
+    // jwt
+    compileOnly(group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.2')
+    runtimeOnly(group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.2')
+    runtimeOnly(group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.2')
+
+    // uuid
+    implementation("com.fasterxml.uuid:java-uuid-generator:4.0.1")
+
+    // aws
+    implementation('org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE')
+
+    // lucy-filter
+    implementation('com.navercorp.lucy:lucy-xss-servlet:2.0.0')
+    implementation('com.navercorp.lucy:lucy-xss:1.6.3')
+
+    // redis
+    implementation('org.springframework.boot:spring-boot-starter-data-redis')
+    implementation("org.redisson:redisson-spring-boot-starter:3.16.8")
+    compile(group: 'it.ozimov', name: 'embedded-redis', version: '0.7.2')
+
+    // restdocs
+    implementation(group: 'org.asciidoctor', name: 'asciidoctorj', version: '2.5.0')
+    implementation("org.springframework.boot:spring-boot-starter-data-redis:2.5.0")
+
+    // mysql
+    implementation(group: 'mysql', name: 'mysql-connector-java', version: '6.0.2')
+
+    // h2
+    implementation(group: 'com.h2database', name: 'h2', version: '1.4.199')
+    runtimeOnly('com.h2database:h2')
+
+    // lombok
+    compileOnly("org.projectlombok:lombok")
+    annotationProcessor('org.projectlombok:lombok')
+    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+    testAnnotationProcessor('org.projectlombok:lombok')
+    testCompileOnly("org.projectlombok:lombok")
+
+    // test
+    implementation('junit:junit:4.13.1')
+    testImplementation('org.springframework.boot:spring-boot-starter-test')
+    testImplementation('org.springframework.restdocs:spring-restdocs-mockmvc')
+}
+
+jar {
+    enabled = false
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+def querydslDir = "$buildDir/generated/querydsl"
+
+querydsl {
+    jpa = true
+    querydslSourcesDir = querydslDir
+}
+
+sourceSets {
+    main.java.srcDir querydslDir
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+    querydsl.extendsFrom compileClasspath
+    asciidoctorExtensions
+}
+
+compileQuerydsl {
+    options.annotationProcessorPath = configurations.querydsl
+}
+
+test {
+    useJUnitPlatform()
+    outputs.dir snippetsDir
+    systemProperty 'jasypt.encryptor.password', findProperty("jasypt.encryptor.password")
+    exclude '**/*'
+}
+
+asciidoctor {
+    inputs.dir snippetsDir
+    configurations 'asciidoctorExtensions'
+    dependsOn test
+}
+
+task copyDocument(type: Copy) {
+    dependsOn asciidoctor
+    from file("build/docs/asciidoc")
+    into file("src/main/resources/static/docs")
+}
+
+asciidoctor.doFirst {
+    delete file('src/main/resources/static/docs')
+}
+
+bootJar {
+    dependsOn asciidoctor
+    copy {
+        from './build/docs/asciidoc'
+        into './build/resources/main/static/docs'
+    }
+}
+
+build {
+    dependsOn copyDocument
+}
