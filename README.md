@@ -11,7 +11,7 @@
 
 <div align="center">
 
-[![Release](https://img.shields.io/badge/-%F0%9F%92%AB%20WebService%20-blue)](https://lnshare-study.com/)
+[![Release](https://img.shields.io/badge/-%F0%9F%92%AB%20Service%20-blue)](https://lnshare-study.com/)
 [![Release](https://img.shields.io/badge/-%F0%9F%93%9A%20API%20Docs-green)]()
 [![Release](https://img.shields.io/badge/%E2%9C%A8%20release-v1.0.0-brightgreen)]()
 
