@@ -1,10 +1,9 @@
 package com.example.backend;
 
+import com.example.backend.lshare.IntegrationTestContainer;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
-class BackendApplicationTests {
+class BackendApplicationTests extends IntegrationTestContainer {
 
     @Test
     void contextLoads() {
