@@ -43,7 +43,7 @@ public class MemberQueryDslQueryRepository {
                 .fetchOne());
     }
 
-    public Optional<Member> findMemberByNickName(NickName nickName) {
+    public Optional<Member> findByNickName(NickName nickName) {
         return Optional.ofNullable(queryFactory.selectFrom(member)
                 .where(member.nickName.eq(nickName).and(member.deleted.eq(FALSE)))
                 .fetchOne());

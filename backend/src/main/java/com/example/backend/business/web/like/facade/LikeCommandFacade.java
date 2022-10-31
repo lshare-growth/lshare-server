@@ -52,7 +52,7 @@ public class LikeCommandFacade {
             }
 
             Study findStudy = studyQueryServices.findStudyById(studyId).orElseThrow(() -> new BusinessException(StudyTypeException.STUDY_NOT_FOUND_EXCEPTION));
-            Member findMember= memberQueryService.findMemberById(memberId).orElseThrow(()->new BusinessException(MEMBER_NOT_FOUND_EXCEPTION));
+            Member findMember= memberQueryService.findById(memberId).orElseThrow(()->new BusinessException(MEMBER_NOT_FOUND_EXCEPTION));
             LikeClicked likeClicked = likeQueryService.exist(memberId, studyId);
 
             likeCommandService.updateLike(likeClicked, memberId, findStudy);

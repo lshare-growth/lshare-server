@@ -53,7 +53,7 @@ public class StudyCommandFacade {
                              Study study,
                              TagNames tagNames) {
 
-        Member studyLeader = memberQueryService.findMemberById(memberId).orElseThrow(() -> new BusinessException(MEMBER_NOT_FOUND_EXCEPTION));
+        Member studyLeader = memberQueryService.findById(memberId).orElseThrow(() -> new BusinessException(MEMBER_NOT_FOUND_EXCEPTION));
 
         Study newStudy = studyCommandService.save(study);
         newStudy.registerMember(studyLeader);
@@ -106,7 +106,7 @@ public class StudyCommandFacade {
                             MaxStudyMemberCount maxStudyMemberCount,
                             Milestone milestone) {
 
-        Member studyLeader = memberQueryService.findMemberById(memberId).orElseThrow(() -> new BusinessException(MEMBER_NOT_FOUND_EXCEPTION));
+        Member studyLeader = memberQueryService.findById(memberId).orElseThrow(() -> new BusinessException(MEMBER_NOT_FOUND_EXCEPTION));
         Study findStudy = studyQueryServices.findStudyById(studyId).orElseThrow(() -> new BusinessException(STUDY_NOT_FOUND_EXCEPTION));
         findStudy.validateStudyLeader(studyLeader);
 
@@ -132,7 +132,7 @@ public class StudyCommandFacade {
 
     @Transactional
     public void deleteStudy(MemberId memberId, StudyId studyId) {
-        Member writer = memberQueryService.findMemberById(memberId).orElseThrow(() -> new BusinessException(MEMBER_NOT_FOUND_EXCEPTION));
+        Member writer = memberQueryService.findById(memberId).orElseThrow(() -> new BusinessException(MEMBER_NOT_FOUND_EXCEPTION));
         Study findStudy = studyQueryServices.findStudyById(studyId).orElseThrow(() -> new BusinessException(STUDY_NOT_FOUND_EXCEPTION));
         studyCommandService.deleteStudy(writer, findStudy);
     }
@@ -163,7 +163,7 @@ public class StudyCommandFacade {
 
     @Transactional
     public void updateStudyStatus(MemberId memberId, StudyId studyId, StudyStatus studyStatus) {
-        Member studyLeader = memberQueryService.findMemberById(memberId).orElseThrow(() -> new BusinessException(MEMBER_NOT_FOUND_EXCEPTION));
+        Member studyLeader = memberQueryService.findById(memberId).orElseThrow(() -> new BusinessException(MEMBER_NOT_FOUND_EXCEPTION));
         Study findStudy = studyQueryServices.findStudyById(studyId).orElseThrow(() -> new BusinessException(STUDY_NOT_FOUND_EXCEPTION));
         studyCommandService.updateStudyStatus(studyLeader, findStudy, studyStatus);
     }

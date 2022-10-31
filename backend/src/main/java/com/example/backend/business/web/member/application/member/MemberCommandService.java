@@ -1,8 +1,6 @@
 package com.example.backend.business.web.member.application.member;
 
 import com.example.backend.business.core.common.District;
-import com.example.backend.business.core.member.entity.Follow;
-import com.example.backend.business.core.member.entity.FollowHistory;
 import com.example.backend.business.core.member.entity.Member;
 import com.example.backend.business.core.member.entity.values.BirthDate;
 import com.example.backend.business.core.member.entity.values.BlogUrl;
@@ -24,21 +22,6 @@ public class MemberCommandService {
     @Transactional
     public Member save(Member member) {
         return memberJpaRepository.save(member);
-    }
-
-    @Transactional
-    public void updateFollow(FollowHistory followHistory,
-                             Member source,
-                             Member target) {
-
-        if (followHistory.exist()) {
-            memberQueryRepository.unfollow(source.getMemberIdAsValue(), target.getMemberIdAsValue());
-            source.decreaseFollowingCount();
-            target.decraseFollowerCount();
-            return;
-        }
-        source.follow(new Follow(source, target));
-        target.increaseFollowerCount();
     }
 
     @Transactional

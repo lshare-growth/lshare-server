@@ -1,6 +1,7 @@
 package com.example.backend.business.web.member.presentation.member;
 
 import com.example.backend.business.core.member.entity.Member;
+import com.example.backend.business.core.member.entity.values.MemberId;
 import com.example.backend.business.core.member.entity.values.NickName;
 import com.example.backend.business.web.member.facade.member.MemberQueryFacade;
 import com.example.backend.business.web.member.presentation.member.dto.response.MemberInformationHoverResponse;
@@ -11,6 +12,7 @@ import com.example.backend.common.login.model.authentication.AuthenticatedMember
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,11 +29,21 @@ public class MemberQueryController {
     @GetMapping("/my-profile")
     public ResponseEntity<MemberProfileResponse> findMemberById(@Authenticated AuthenticatedMember authenticatedMember) {
 
-        Member findMember = memberQueryFacade.findMemberById(
+        Member findMember = memberQueryFacade.findById(
                 authenticatedMember.getAuthenticatedIdAsValue()
         );
 
         return ResponseEntity.ok(MemberProfileResponse.of(findMember));
+    }
+
+    @GetMapping("/{memberId}/hover-info")
+    public ResponseEntity<MemberInformationHoverResponse> findMemberById(@PathVariable Long memberId) {
+
+        Member findMember = memberQueryFacade.findById(
+                MemberId.from(memberId)
+        );
+
+        return ResponseEntity.ok(MemberInformationHoverResponse.of(findMember));
     }
 
     @GetMapping
@@ -41,7 +53,7 @@ public class MemberQueryController {
             return ResponseEntity.notFound().build();
         }
 
-        Member findMember = memberQueryFacade.findMemberByNickName(
+        Member findMember = memberQueryFacade.findByNickName(
                 NickName.from(nickName)
         );
 
