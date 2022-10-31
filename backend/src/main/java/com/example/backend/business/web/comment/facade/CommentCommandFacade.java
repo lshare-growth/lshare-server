@@ -64,7 +64,7 @@ public class CommentCommandFacade {
                 Thread.sleep(500);
             }
             Study findStudy = studyQueryServices.findStudyById(studyId).orElseThrow(() -> new BusinessException(StudyTypeException.STUDY_NOT_FOUND_EXCEPTION));
-            Member writer = memberQueryService.findMemberById(memberId).orElseThrow(() -> new BusinessException(MEMBER_NOT_FOUND_EXCEPTION));
+            Member writer = memberQueryService.findById(memberId).orElseThrow(() -> new BusinessException(MEMBER_NOT_FOUND_EXCEPTION));
             return commentCommandService.writeComment(writer, findStudy, content);
         } catch (InterruptedException e) {
             throw new RuntimeException();
@@ -102,7 +102,7 @@ public class CommentCommandFacade {
             if (!available) {
                 Thread.sleep(500);
             }
-            Member writer = memberQueryService.findMemberById(memberId).orElseThrow(() -> new BusinessException(MEMBER_NOT_FOUND_EXCEPTION));
+            Member writer = memberQueryService.findById(memberId).orElseThrow(() -> new BusinessException(MEMBER_NOT_FOUND_EXCEPTION));
             Comment newReComment = commentCommandService.writeReComment(writer, commentParentId, content);
             commentQueryServices.existCommentParent(commentParentId);
             return newReComment;
@@ -118,7 +118,7 @@ public class CommentCommandFacade {
                               CommentId commentId,
                               CommentContent content) {
 
-        Member writer = memberQueryService.findMemberById(memberId).orElseThrow(() -> new BusinessException(MEMBER_NOT_FOUND_EXCEPTION));
+        Member writer = memberQueryService.findById(memberId).orElseThrow(() -> new BusinessException(MEMBER_NOT_FOUND_EXCEPTION));
         commentCommandService.updateComment(writer.getMemberIdAsValue(), commentId, content);
     }
 
@@ -129,7 +129,7 @@ public class CommentCommandFacade {
                                 CommentId commentId,
                                 CommentContent content) {
 
-        Member writer = memberQueryService.findMemberById(memberId).orElseThrow(() -> new BusinessException(MEMBER_NOT_FOUND_EXCEPTION));
+        Member writer = memberQueryService.findById(memberId).orElseThrow(() -> new BusinessException(MEMBER_NOT_FOUND_EXCEPTION));
 
         commentCommandService.updateReComment(writer.getMemberIdAsValue(), commentId, content);
         existValidation(studyId, commentParentId);
@@ -161,7 +161,7 @@ public class CommentCommandFacade {
                 Thread.sleep(500);
             }
 
-            Member writer = memberQueryService.findMemberById(memberId).orElseThrow(() -> new BusinessException(MEMBER_NOT_FOUND_EXCEPTION));
+            Member writer = memberQueryService.findById(memberId).orElseThrow(() -> new BusinessException(MEMBER_NOT_FOUND_EXCEPTION));
             commentCommandService.deleteComment(writer.getMemberIdAsValue(), commentId);
         } catch (InterruptedException e) {
             throw new RuntimeException();
@@ -196,7 +196,7 @@ public class CommentCommandFacade {
                 Thread.sleep(500);
             }
 
-            Member writer = memberQueryService.findMemberById(memberId).orElseThrow(() -> new BusinessException(MEMBER_NOT_FOUND_EXCEPTION));
+            Member writer = memberQueryService.findById(memberId).orElseThrow(() -> new BusinessException(MEMBER_NOT_FOUND_EXCEPTION));
             commentCommandService.deleteReComment(writer.getMemberIdAsValue(), commentParentId, commentId);
             existValidation(studyId, commentParentId);
         } catch (InterruptedException e) {

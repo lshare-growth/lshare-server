@@ -1,7 +1,7 @@
 package com.example.backend.business.web.member.presentation.follow;
 
 import com.example.backend.business.core.member.entity.values.MemberId;
-import com.example.backend.business.web.member.facade.member.MemberCommandFacade;
+import com.example.backend.business.web.member.facade.follow.FollowCommandFacade;
 import com.example.backend.business.web.member.presentation.member.dto.request.FollowRequest;
 import com.example.backend.common.login.annotation.Authenticated;
 import com.example.backend.common.login.model.authentication.AuthenticatedMember;
@@ -17,13 +17,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class FollowCommandController {
 
-    private final MemberCommandFacade memberCommandFacade;
+    private final FollowCommandFacade followCommandFacade;
 
     @PostMapping("/following")
     public ResponseEntity<Void> updateFollow(@Authenticated AuthenticatedMember authenticatedMember,
                                              @RequestBody FollowRequest request) {
 
-        memberCommandFacade.updateFollow(
+        followCommandFacade.updateFollow(
                 authenticatedMember.getAuthenticatedIdAsValue(),
                 MemberId.from(request.getTargetId())
         );

@@ -1,13 +1,11 @@
 package com.example.backend.business.web.member.presentation.follow;
 
 import com.example.backend.business.core.common.values.Cursor;
-import com.example.backend.business.core.member.entity.Member;
 import com.example.backend.business.core.member.entity.values.Followers;
 import com.example.backend.business.core.member.entity.values.MemberId;
-import com.example.backend.business.web.member.facade.member.MemberQueryFacade;
+import com.example.backend.business.web.member.facade.follow.FollowQueryFacade;
 import com.example.backend.business.web.member.presentation.member.dto.response.FollowHistoryExistResponse;
 import com.example.backend.business.web.member.presentation.member.dto.response.FollowerListResponse;
-import com.example.backend.business.web.member.presentation.member.dto.response.MemberInformationHoverResponse;
 import com.example.backend.common.configuration.common.page.CursorPageable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -29,17 +27,7 @@ import static com.example.backend.common.api.ApiUtils.getMemberIdAsValue;
 @RequiredArgsConstructor
 public class FollowQueryController {
 
-    private final MemberQueryFacade memberQueryFacade;
-
-    @GetMapping("/{memberId}/hover-info")
-    public ResponseEntity<MemberInformationHoverResponse> findMemberById(@PathVariable Long memberId) {
-
-        Member findMember = memberQueryFacade.findMemberById(
-                MemberId.from(memberId)
-        );
-
-        return ResponseEntity.ok(MemberInformationHoverResponse.of(findMember));
-    }
+    private final FollowQueryFacade followQueryFacade;
 
     @GetMapping("/{memberId}/friendship/follow-history")
     public ResponseEntity<FollowHistoryExistResponse> findFollowHistoryById(@PathVariable Long memberId,
@@ -49,7 +37,7 @@ public class FollowQueryController {
             return ResponseEntity.ok(FollowHistoryExistResponse.of(NON_EXIST));
         }
 
-        FollowHistoryExistResponse response = memberQueryFacade.findFollowHistoryById(
+        FollowHistoryExistResponse response = followQueryFacade.findFollowHistoryById(
                 getMemberIdAsValue(httpServletRequest),
                 MemberId.from(memberId)
         );
@@ -62,7 +50,7 @@ public class FollowQueryController {
                                                                   @CursorPageable Cursor cursor,
                                                                   HttpServletRequest httpServletRequest) {
 
-        Followers followingList = memberQueryFacade.findFollowingListById(
+        Followers followingList = followQueryFacade.findFollowingListById(
                 MemberId.from(memberId),
                 cursor
         );
@@ -86,7 +74,7 @@ public class FollowQueryController {
                                                                  @CursorPageable Cursor cursor,
                                                                  HttpServletRequest httpServletRequest) {
 
-        Followers followerList = memberQueryFacade.findFollowerListById(
+        Followers followerList = followQueryFacade.findFollowerListById(
                 MemberId.from(memberId),
                 cursor
         );
@@ -106,7 +94,7 @@ public class FollowQueryController {
     }
 
     private List<Long> getMyFollwerList(MemberId memberId, List<Long> getTargetIds) {
-        return memberQueryFacade.findMyFollowList(
+        return followQueryFacade.findMyFollowList(
                 memberId,
                 getTargetIds
         );
