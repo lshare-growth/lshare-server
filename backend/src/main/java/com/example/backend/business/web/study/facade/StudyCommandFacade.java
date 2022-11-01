@@ -26,7 +26,6 @@ import lombok.RequiredArgsConstructor;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.LinkedHashSet;
@@ -68,31 +67,15 @@ public class StudyCommandFacade {
         Set<StudyHashTag> studyHashTags = new LinkedHashSet<>();
 
         for (TagName tagName : tagNames.getTagNames()) {
-            if (!existHashTag(tagName)) {
+            if (!exist(tagName)) {
                 HashTag newHashTag = hashTagCommandService.save(HashTag.createHashTag(tagName));
                 studyHashTags.add(StudyHashTag.from(study, newHashTag));
                 continue;
             }
-            HashTag findHashTag = hashTagQueryService.findHashTagByTagName(tagName).orElseThrow(() -> new BusinessException(HASH_TAG_NOT_FOUND_EXCEPTION));
+            HashTag findHashTag = hashTagQueryService.findByTagName(tagName).orElseThrow(() -> new BusinessException(HASH_TAG_NOT_FOUND_EXCEPTION));
             studyHashTags.add(StudyHashTag.from(study, findHashTag));
         }
         return StudyHashTags.from(studyHashTags);
-    }
-
-    @Transactional
-    public boolean existHashTag(TagName newTagName) {
-        RLock lock = redissonClient.getLock(newTagName.getTagName());
-        try {
-            boolean available = lock.tryLock(1, 1, TimeUnit.SECONDS);
-            if (!available) {
-                Thread.sleep(200);
-            }
-            return hashTagQueryService.exist(newTagName);
-        } catch (InterruptedException e) {
-            throw new RuntimeException();
-        } finally {
-            lock.unlock();
-        }
     }
 
     @Transactional
@@ -107,64 +90,59 @@ public class StudyCommandFacade {
                             Milestone milestone) {
 
         Member studyLeader = memberQueryService.findById(memberId).orElseThrow(() -> new BusinessException(MEMBER_NOT_FOUND_EXCEPTION));
-        Study findStudy = studyQueryServices.findStudyById(studyId).orElseThrow(() -> new BusinessException(STUDY_NOT_FOUND_EXCEPTION));
-        findStudy.validateStudyLeader(studyLeader);
+        Study findStudy = studyQueryServices.findById(studyId).orElseThrow(() -> new BusinessException(STUDY_NOT_FOUND_EXCEPTION));
+        StudyHashTags hashTags = findByTagName(tagNames, findStudy);
 
-        StudyHashTags hashTags = findHashTagsByTagName(tagNames, findStudy);
         studyCommandService.updateStudy(studyLeader, findStudy, title, content, hashTags, progressOfStudy, district, maxStudyMemberCount, milestone);
     }
 
     @Transactional
-    public StudyHashTags findHashTagsByTagName(TagNames tagNames, Study study) {
+    public StudyHashTags findByTagName(TagNames tagNames, Study study) {
         Set<StudyHashTag> studyHashTags = new LinkedHashSet<>();
 
         for (TagName tagName : tagNames.getTagNames()) {
-            if (!existHashTag(tagName)) {
+            if (!exist(tagName)) {
                 HashTag newHashTag = hashTagCommandService.save(HashTag.createHashTag(tagName));
                 studyHashTags.add(StudyHashTag.from(study, newHashTag));
                 continue;
             }
-            HashTag findHashTag = hashTagQueryService.findHashTagByTagName(tagName).orElseThrow();
+            HashTag findHashTag = hashTagQueryService.findByTagName(tagName).orElseThrow();
             studyHashTags.add(StudyHashTag.from(study, findHashTag));
         }
         return StudyHashTags.from(studyHashTags);
     }
 
     @Transactional
+    public void updateStudyStatus(MemberId memberId, StudyId studyId, StudyStatus studyStatus) {
+        Member studyLeader = memberQueryService.findById(memberId).orElseThrow(() -> new BusinessException(MEMBER_NOT_FOUND_EXCEPTION));
+        Study findStudy = studyQueryServices.findById(studyId).orElseThrow(() -> new BusinessException(STUDY_NOT_FOUND_EXCEPTION));
+
+        studyCommandService.updateStudyStatus(studyLeader, findStudy, studyStatus);
+    }
+
+    @Transactional
     public void deleteStudy(MemberId memberId, StudyId studyId) {
         Member writer = memberQueryService.findById(memberId).orElseThrow(() -> new BusinessException(MEMBER_NOT_FOUND_EXCEPTION));
-        Study findStudy = studyQueryServices.findStudyById(studyId).orElseThrow(() -> new BusinessException(STUDY_NOT_FOUND_EXCEPTION));
+        Study findStudy = studyQueryServices.findById(studyId).orElseThrow(() -> new BusinessException(STUDY_NOT_FOUND_EXCEPTION));
+
         studyCommandService.deleteStudy(writer, findStudy);
     }
 
     @Transactional
-    public void requestStudyJoin(MemberId memberId, StudyId studyId) {
-        RLock lock = redissonClient.getLock(studyId.toString());
+    public boolean exist(TagName newTagName) {
+        RLock lock = redissonClient.getLock(newTagName.getTagName());
         try {
-            boolean available = lock.tryLock(5, 1, TimeUnit.SECONDS);
+            boolean available = lock.tryLock(1, 1, TimeUnit.SECONDS);
+
             if (!available) {
-                Thread.sleep(500);
+                Thread.sleep(200);
             }
-            requestStudyJoinLogic(memberId, studyId);
+
+            return hashTagQueryService.exist(newTagName);
         } catch (InterruptedException e) {
             throw new RuntimeException();
         } finally {
             lock.unlock();
         }
-    }
-
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void requestStudyJoinLogic(MemberId memberId, StudyId studyId) {
-        Study findStudy = studyQueryServices.findStudyAndStudyMembersByStudyId(studyId).orElseThrow(() -> new BusinessException(STUDY_NOT_FOUND_EXCEPTION));
-        Member newMember = memberQueryService.findMemberAndStudyJoinRequestsById(memberId).orElseThrow(() -> new BusinessException(MEMBER_NOT_FOUND_EXCEPTION));
-
-        studyCommandService.requestStudyJoin(findStudy, newMember);
-    }
-
-    @Transactional
-    public void updateStudyStatus(MemberId memberId, StudyId studyId, StudyStatus studyStatus) {
-        Member studyLeader = memberQueryService.findById(memberId).orElseThrow(() -> new BusinessException(MEMBER_NOT_FOUND_EXCEPTION));
-        Study findStudy = studyQueryServices.findStudyById(studyId).orElseThrow(() -> new BusinessException(STUDY_NOT_FOUND_EXCEPTION));
-        studyCommandService.updateStudyStatus(studyLeader, findStudy, studyStatus);
     }
 }

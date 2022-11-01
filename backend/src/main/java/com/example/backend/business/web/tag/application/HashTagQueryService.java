@@ -22,13 +22,23 @@ public class HashTagQueryService {
     private final HashTagQueryDslCommandRepositorys hashTagQueryDslCommandRepositorys;
 
     @Transactional(readOnly = true)
-    public Optional<HashTag> findHashTagByTagName(TagName tagName) {
-        return hashTagQueryDslCommandRepositorys.findHashTagByTagName(tagName);
+    public List<HashTagResponse> findById(StudyId studyId) {
+        return hashTagQueryDslCommandRepositorys.findById(studyId);
     }
 
     @Transactional(readOnly = true)
-    public List<HashTag> findHashTagByTagNames(TagName tagName, Pageable pageable) {
-        return hashTagQueryDslCommandRepositorys.findHashTagsByName(tagName, pageable);
+    public List<StudyHashTagResponse> findByIds(StudyIds studyIds) {
+        return hashTagQueryDslCommandRepositorys.findHashTagsByStudyId(studyIds);
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<HashTag> findByTagName(TagName tagName) {
+        return hashTagQueryDslCommandRepositorys.findByTagName(tagName);
+    }
+
+    @Transactional(readOnly = true)
+    public List<HashTag> findByTagName(TagName tagName, Pageable pageable) {
+        return hashTagQueryDslCommandRepositorys.findByTagName(tagName, pageable);
     }
 
     @Transactional(readOnly = true)
@@ -37,17 +47,7 @@ public class HashTagQueryService {
     }
 
     @Transactional(readOnly = true)
-    public boolean exist(TagName newTagName) {
-        return hashTagQueryDslCommandRepositorys.existsHashTagByTagName(newTagName);
-    }
-
-    @Transactional(readOnly = true)
-    public List<HashTagResponse> findStudyHashTagsById(StudyId studyId) {
-        return hashTagQueryDslCommandRepositorys.findStudyHashTagsById(studyId);
-    }
-
-    @Transactional(readOnly = true)
-    public List<StudyHashTagResponse> findStudyHashTagsByStudyIds(StudyIds studyIds) {
-        return hashTagQueryDslCommandRepositorys.findHashTagsByStudyId(studyIds);
+    public boolean exist(TagName tagName) {
+        return hashTagQueryDslCommandRepositorys.exist(tagName);
     }
 }

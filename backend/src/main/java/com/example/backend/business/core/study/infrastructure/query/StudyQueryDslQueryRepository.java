@@ -2,14 +2,12 @@ package com.example.backend.business.core.study.infrastructure.query;
 
 import com.example.backend.business.core.like.entity.LikeClicked;
 import com.example.backend.business.core.member.entity.values.MemberId;
-import com.example.backend.business.core.member.entity.values.StudyJoinRequest;
 import com.example.backend.business.core.study.entity.Study;
 import com.example.backend.business.core.study.entity.StudyHashTag;
 import com.example.backend.business.core.study.entity.StudyMember;
 import com.example.backend.business.core.study.entity.values.StudyId;
 import com.example.backend.business.core.study.entity.values.StudyTitle;
 import com.example.backend.business.core.tag.entity.values.HashTagIds;
-import com.example.backend.business.web.study.presentation.dto.request.StudyJoinRequestId;
 import com.example.backend.common.mapper.database.SortOrder;
 import com.querydsl.core.types.dsl.Wildcard;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -29,7 +27,6 @@ import java.util.Optional;
 import static com.example.backend.business.core.common.Deleted.FALSE;
 import static com.example.backend.business.core.like.entity.QLike.like;
 import static com.example.backend.business.core.member.entity.QMember.member;
-import static com.example.backend.business.core.member.entity.values.QStudyJoinRequest.studyJoinRequest;
 import static com.example.backend.business.core.study.entity.QStudy.study;
 import static com.example.backend.business.core.study.entity.QStudyHashTag.studyHashTag;
 import static com.example.backend.business.core.study.entity.QStudyMember.studyMember;
@@ -47,13 +44,16 @@ public class StudyQueryDslQueryRepository {
         this.queryFactory = queryFactory;
     }
 
-    public Optional<Study> findStudyById(StudyId studyId) {
+    public Optional<Study> findById(StudyId studyId) {
         return Optional.ofNullable(queryFactory.selectFrom(study)
-                .where(study.studyId.eq(studyId.getStudyId()).and(study.deleted.eq(FALSE)))
+                .where(
+                        study.studyId.eq(studyId.getStudyId())
+                                .and(study.deleted.eq(FALSE))
+                )
                 .fetchOne());
     }
 
-    public Slice<StudyMember> findStudyLandingPage(Pageable pageable) {
+    public Slice<StudyMember> findLandingPage(Pageable pageable) {
         List<StudyMember> content = queryFactory.selectFrom(studyMember)
                 .join(studyMember.study, study)
                 .fetchJoin()
@@ -97,9 +97,12 @@ public class StudyQueryDslQueryRepository {
         return PageableExecutionUtils.getPage(content, pageable, () -> totalCount.fetch().get(0));
     }
 
-    public Page<Study> findStudiesByTitle(Pageable pageable, StudyTitle studyTitle) {
+    public Page<Study> searchByTitle(StudyTitle studyTitle, Pageable pageable) {
         List<Study> contents = queryFactory.selectFrom(study)
-                .where(study.title.title.like(studyTitle.getTitle() + "%").and(study.deleted.eq(FALSE)))
+                .where(
+                        study.title.title.like(studyTitle.getTitle() + "%")
+                                .and(study.deleted.eq(FALSE))
+                )
                 .offset(pageable.getOffset())
                 .limit(FIXED_PAGE_SIZE)
                 .fetch();
@@ -118,7 +121,10 @@ public class StudyQueryDslQueryRepository {
     public boolean exist(StudyId studyId) {
         Integer result = queryFactory.selectOne()
                 .from(study)
-                .where(study.studyId.eq(studyId.getStudyId()).and(study.deleted.eq(FALSE)))
+                .where(
+                        study.studyId.eq(studyId.getStudyId())
+                                .and(study.deleted.eq(FALSE))
+                )
                 .fetchFirst();
         return result != null;
     }
@@ -126,26 +132,15 @@ public class StudyQueryDslQueryRepository {
     public LikeClicked exist(MemberId memberId, StudyId studyId) {
         Integer result = queryFactory.selectOne()
                 .from(like)
-                .where(like.study.studyId.eq(studyId.getStudyId()).and(like.memberId.memberId.eq(memberId.getMemberId())))
+                .where(
+                        like.study.studyId.eq(studyId.getStudyId())
+                                .and(like.memberId.memberId.eq(memberId.getMemberId()))
+                )
                 .fetchOne();
         return result != null ? LikeClicked.TRUE : LikeClicked.FALSE;
     }
 
-    public Optional<Study> findStudyAndStudyMembersById(StudyId studyId) {
-        return Optional.ofNullable(queryFactory.selectFrom(study)
-                .leftJoin(study.studyMembers.studyMembers, studyMember)
-                .fetchJoin()
-                .where(study.studyId.eq(studyId.getStudyId()).and(study.deleted.eq(FALSE)))
-                .fetchOne());
-    }
-
-    public Optional<StudyJoinRequest> findStudyJoinRequestById(StudyJoinRequestId studyJoinRequestId) {
-        return Optional.ofNullable(queryFactory.selectFrom(studyJoinRequest)
-                .where(studyJoinRequest.studyJoinRequestId.eq(studyJoinRequestId.getStudyJoinRequestId()))
-                .fetchOne());
-    }
-
-    public Page<StudyHashTag> findStudiesByTagName(HashTagIds hashTagIds, Pageable pageable) {
+    public Page<StudyHashTag> searchByTagName(HashTagIds hashTagIds, Pageable pageable) {
         final List<StudyHashTag> contents = queryFactory.selectFrom(studyHashTag)
                 .join(studyHashTag.study, study)
                 .on(study.deleted.eq(FALSE))
@@ -161,11 +156,14 @@ public class StudyQueryDslQueryRepository {
         return PageableExecutionUtils.getPage(contents, pageable, () -> totalCount.fetch().get(0));
     }
 
-    public Optional<StudyMember> findStudyLeaderByStudyId(StudyId studyIdAsValue) {
+    public Optional<StudyMember> findStudyLeaderById(StudyId studyId) {
         return Optional.ofNullable(queryFactory.selectFrom(studyMember)
                 .join(studyMember.member, member)
                 .fetchJoin()
-                .where(studyMember.study.studyId.eq(studyIdAsValue.getStudyId()).and(studyMember.studyMemberRole.eq(LEADER)))
+                .where(
+                        studyMember.study.studyId.eq(studyId.getStudyId())
+                                .and(studyMember.studyMemberRole.eq(LEADER))
+                )
                 .fetchOne());
     }
 }

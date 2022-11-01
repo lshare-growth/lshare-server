@@ -5,9 +5,9 @@ import com.example.backend.business.core.study.entity.values.StudyTitle;
 import com.example.backend.business.core.tag.entity.values.TagName;
 import com.example.backend.business.web.study.facade.StudyQueryFacade;
 import com.example.backend.business.web.study.presentation.dto.response.StudyLandingPageResponse;
-import com.example.backend.business.web.study.presentation.dto.response.StudyPageResponseV2;
+import com.example.backend.business.web.study.presentation.dto.response.StudyPageResponse;
 import com.example.backend.business.web.study.presentation.dto.response.StudyResponse;
-import com.example.backend.business.web.study.presentation.dto.response.StudySearchResponse;
+import com.example.backend.business.web.study.presentation.dto.response.StudySearchPageResponse;
 import com.example.backend.common.mapper.database.SortOrder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -28,36 +28,13 @@ import static com.example.backend.common.api.ApiUtils.getMemberId;
 @RequestMapping("/api/studies")
 public class StudyQueryController {
 
-    private static final String NULL_STRING = "";
-
     private final StudyQueryFacade studyQueryFacade;
 
-    @GetMapping("/landing")
-    public ResponseEntity<StudyLandingPageResponse> findStudyLandingPage(Pageable pageable) {
-
-        StudyLandingPageResponse response = studyQueryFacade.findStudyLandingPage(
-                pageable
-        );
-
-        return ResponseEntity.ok(response);
-    }
-
-    @GetMapping
-    public ResponseEntity<StudyPageResponseV2> findStudyPage(Pageable pageable) {
-
-        StudyPageResponseV2 response = studyQueryFacade.findStudyPage(
-                pageable,
-                SortOrder.findByType(null)
-        );
-
-        return ResponseEntity.ok(response);
-    }
-
     @GetMapping("/{studyId}")
-    public ResponseEntity<StudyResponse> findStudyById(@PathVariable Long studyId,
-                                                       HttpServletRequest httpServletRequest) {
+    public ResponseEntity<StudyResponse> findById(@PathVariable Long studyId,
+                                                  HttpServletRequest httpServletRequest) {
 
-        StudyResponse response = studyQueryFacade.findStudyByIdAndIncreaseViewCount(
+        StudyResponse response = studyQueryFacade.findByIdAndIncreaseViewCount(
                 getMemberId(httpServletRequest),
                 StudyId.from(studyId)
         );
@@ -65,31 +42,52 @@ public class StudyQueryController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/landing")
+    public ResponseEntity<StudyLandingPageResponse> findLandingPage(Pageable pageable) {
+
+        StudyLandingPageResponse response = studyQueryFacade.findLandingPage(
+                pageable
+        );
+
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping
+    public ResponseEntity<StudyPageResponse> findStudyPage(Pageable pageable) {
+
+        StudyPageResponse response = studyQueryFacade.findStudyPage(
+                pageable,
+                SortOrder.findByType(null)
+        );
+
+        return ResponseEntity.ok(response);
+    }
+
     @GetMapping("/searching")
-    public ResponseEntity<StudySearchResponse> findStudiesByTitle(@RequestParam String title,
-                                                                  Pageable pageable) {
+    public ResponseEntity<StudySearchPageResponse> searchByTitle(@RequestParam String title,
+                                                                 Pageable pageable) {
 
         if (Objects.isNull(title) || isNullString(title)) {
-            return ResponseEntity.ok(StudySearchResponse.emptyPage());
+            return ResponseEntity.ok(StudySearchPageResponse.emptyPage());
         }
 
-        StudySearchResponse response = studyQueryFacade.findStudiesByTitle(
-                pageable,
-                StudyTitle.from(title)
+        StudySearchPageResponse response = studyQueryFacade.searchByTitle(
+                StudyTitle.from(title),
+                pageable
         );
 
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/tag-searching")
-    public ResponseEntity<StudySearchResponse> findStudiesByTagName(@RequestParam String tagName,
-                                                                    Pageable pageable) {
+    public ResponseEntity<StudySearchPageResponse> searchByTagName(@RequestParam(required = false) String tagName,
+                                                                   Pageable pageable) {
 
         if (Objects.isNull(tagName) || isNullString(tagName)) {
-            return ResponseEntity.ok(StudySearchResponse.emptyPage());
+            return ResponseEntity.ok(StudySearchPageResponse.emptyPage());
         }
 
-        StudySearchResponse response = studyQueryFacade.findStudiesByTagName(
+        StudySearchPageResponse response = studyQueryFacade.searchByTagName(
                 TagName.from(tagName),
                 pageable
         );
@@ -98,6 +96,6 @@ public class StudyQueryController {
     }
 
     private boolean isNullString(String value) {
-        return value.trim().equals(NULL_STRING);
+        return value.trim().equals("");
     }
 }

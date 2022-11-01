@@ -29,6 +29,6 @@ public class HashTagQueryFacade {
 
     @Transactional(readOnly = true)
     public List<HashTagResponse> findStudyHashTagsById(StudyId studyId) {
-        return hashTagQueryService.findStudyHashTagsById(studyId);
+        return hashTagQueryService.findById(studyId);
     }
 }

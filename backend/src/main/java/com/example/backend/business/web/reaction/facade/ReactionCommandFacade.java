@@ -40,7 +40,7 @@ public class ReactionCommandFacade {
 
         Member findMember = memberQueryService.findById(memberId).orElseThrow(()->new BusinessException(MEMBER_NOT_FOUND_EXCEPTION));
         Comment findComment = commentQueryServices.findCommentById(commentId).orElseThrow(()->new BusinessException(COMMENT_NOT_FOUND_EXCEPTION));
-        Study findStudy = studyQueryFacade.findStudyById(studyId).orElseThrow(() -> new BusinessException(STUDY_NOT_FOUND_EXCEPTION));
+        Study findStudy = studyQueryFacade.findById(studyId).orElseThrow(() -> new BusinessException(STUDY_NOT_FOUND_EXCEPTION));
         ReactionClicked reactionClicked = reactionQueryService.exist(memberId, commentId, commentReactionEmotion);
 
         reactionCommandService.updateReaction(findMember, findStudy, findComment, reactionClicked, commentReactionEmotion);

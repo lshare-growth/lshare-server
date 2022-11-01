@@ -10,20 +10,20 @@ import java.util.List;
 
 public class StudyLandingPageResponse {
 
-    private final CustomSlice<StudyPageResponse> contents;
+    private final CustomSlice<StudyLandingResponse> contents;
     private final List<StudyHashTagResponse> hashTags;
 
-    public StudyLandingPageResponse(Slice<StudyPageResponse> page) {
+    public StudyLandingPageResponse(Slice<StudyLandingResponse> page) {
         this.contents = convertToCustomSlice(page);
         this.hashTags = null;
     }
 
-    public StudyLandingPageResponse(Slice<StudyPageResponse> page, List<StudyHashTagResponse> hashTags) {
+    public StudyLandingPageResponse(Slice<StudyLandingResponse> page, List<StudyHashTagResponse> hashTags) {
         this.contents = convertToCustomSlice(page);
         this.hashTags = hashTags;
     }
 
-    private CustomSlice<StudyPageResponse> convertToCustomSlice(Slice<StudyPageResponse> page) {
+    private CustomSlice<StudyLandingResponse> convertToCustomSlice(Slice<StudyLandingResponse> page) {
         return new CustomSlice<>(page);
     }
 
@@ -31,11 +31,11 @@ public class StudyLandingPageResponse {
         return new StudyLandingPageResponse(new SliceImpl<>(Collections.emptyList()));
     }
 
-    public static StudyLandingPageResponse of(Slice<StudyPageResponse> page, List<StudyHashTagResponse> hashTags) {
+    public static StudyLandingPageResponse of(Slice<StudyLandingResponse> page, List<StudyHashTagResponse> hashTags) {
         return new StudyLandingPageResponse(page, hashTags);
     }
 
-    public CustomSlice<StudyPageResponse> getContents() {
+    public CustomSlice<StudyLandingResponse> getContents() {
         return contents;
     }
 
