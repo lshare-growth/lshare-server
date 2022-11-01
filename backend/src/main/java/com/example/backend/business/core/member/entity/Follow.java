@@ -87,8 +87,8 @@ public class Follow {
         return Objects.hash(getSource(), getTarget());
     }
 
-    @Override
-    public String toString() {
-        return String.format("팔로우 주체: %s, 팔로잉 대상: %s", source, target);
-    }
+//    @Override
+//    public String toString() {
+//        return String.format("팔로우 주체: %s, 팔로잉 대상: %s", source, target);
+//    }
 }

@@ -9,6 +9,7 @@ import com.example.backend.business.web.member.presentation.follow.dto.response.
 import com.example.backend.business.web.member.presentation.follow.dto.response.FollowingListResponse;
 import com.example.backend.common.configuration.common.page.CursorPageable;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,9 +24,10 @@ import static com.example.backend.business.core.member.entity.FollowHistory.NON_
 import static com.example.backend.common.api.ApiUtils.getMemberId;
 import static com.example.backend.common.api.ApiUtils.getMemberIdAsValue;
 
+@Slf4j
 @RestController
-@RequestMapping("/api/members")
 @RequiredArgsConstructor
+@RequestMapping("/api/members")
 public class FollowQueryController {
 
     private final FollowQueryFacade followQueryFacade;
@@ -62,7 +64,7 @@ public class FollowQueryController {
 
         List<Long> myFollowerList = getMyFollwerList(
                 getMemberIdAsValue(httpServletRequest),
-                followingList.getSourceIds()
+                followingList.getTargetIds()
         );
 
         return ResponseEntity.ok(FollowingListResponse.of(followingList, myFollowerList));
@@ -84,7 +86,7 @@ public class FollowQueryController {
 
         List<Long> myFollowerList = getMyFollwerList(
                 getMemberIdAsValue(httpServletRequest),
-                followerList.getTargetIds()
+                followerList.getSourceIds()
         );
 
         return ResponseEntity.ok(FollowerListResponse.of(followerList, myFollowerList));

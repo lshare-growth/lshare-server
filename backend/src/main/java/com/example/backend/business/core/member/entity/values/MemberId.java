@@ -29,17 +29,6 @@ public class MemberId {
         }
     }
 
-    private MemberId(String memberId) {
-        validateMemberId(memberId);
-        this.memberId = parseMemberId(memberId);
-    }
-
-    private void validateMemberId(String memberId) {
-        if (Objects.isNull(memberId)) {
-            throw new BusinessException(UNAUTHORIZED_EXCEPTION);
-        }
-    }
-
     private MemberId(Object memberId) {
         validateMemberId(memberId);
         this.memberId = parseMemberId(memberId);
@@ -51,11 +40,16 @@ public class MemberId {
         }
     }
 
-    private Long parseMemberId(String memberId) {
-        if (Objects.isNull(memberId)) {
-            return null;
-        }
-        return Long.parseLong(memberId);
+    public static MemberId from(Long memberId) {
+        return new MemberId(memberId);
+    }
+
+    public static MemberId from(Object memberId) {
+        return new MemberId(memberId);
+    }
+
+    public Long getMemberId() {
+        return memberId;
     }
 
     private Long parseMemberId(Object memberId) {
@@ -87,20 +81,8 @@ public class MemberId {
         }
     }
 
-    public static MemberId from(Long memberId) {
-        return new MemberId(memberId);
-    }
-
-    public static MemberId from(Object memberId) {
-        return new MemberId(memberId);
-    }
-
     public static MemberId getInvalidMemberId() {
         return MemberId.from(-1L);
-    }
-
-    public Long getMemberId() {
-        return memberId;
     }
 
     @Override
