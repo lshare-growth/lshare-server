@@ -1,6 +1,6 @@
 package com.example.backend.lshare.business.presentation.member.command;
 
-import com.example.backend.business.web.member.presentation.member.dto.request.FollowRequest;
+import com.example.backend.business.web.member.presentation.follow.dto.request.FollowRequest;
 import com.example.backend.lshare.RestdocsController;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

@@ -2,7 +2,7 @@ package com.example.backend.business.web.member.presentation.follow;
 
 import com.example.backend.business.core.member.entity.values.MemberId;
 import com.example.backend.business.web.member.facade.follow.FollowCommandFacade;
-import com.example.backend.business.web.member.presentation.member.dto.request.FollowRequest;
+import com.example.backend.business.web.member.presentation.follow.dto.request.FollowRequest;
 import com.example.backend.common.login.annotation.Authenticated;
 import com.example.backend.common.login.model.authentication.AuthenticatedMember;
 import lombok.RequiredArgsConstructor;

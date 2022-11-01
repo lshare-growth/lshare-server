@@ -6,7 +6,7 @@ import com.example.backend.business.core.member.entity.Member;
 import com.example.backend.business.core.member.entity.values.GithubId;
 import com.example.backend.business.core.member.entity.values.MemberId;
 import com.example.backend.business.core.member.entity.values.NickName;
-import com.example.backend.business.web.member.presentation.member.dto.response.FollowHistoryExistResponse;
+import com.example.backend.business.web.member.presentation.follow.dto.response.FollowHistoryExistResponse;
 import com.example.backend.business.web.member.presentation.member.dto.response.NickNameExistResponse;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.stereotype.Repository;

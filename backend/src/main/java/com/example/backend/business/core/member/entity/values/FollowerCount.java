@@ -42,7 +42,7 @@ public class FollowerCount {
         if (afterUnfollowCount < 0) {
             throw new IllegalStateException();
         }
-        return followerCount;
+        return afterUnfollowCount;
     }
 
     @Override

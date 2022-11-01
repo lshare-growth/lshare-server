@@ -4,7 +4,7 @@ import com.example.backend.business.core.common.values.Cursor;
 import com.example.backend.business.core.member.entity.values.Followers;
 import com.example.backend.business.core.member.entity.values.MemberId;
 import com.example.backend.business.core.member.infrastructure.follow.query.FollowQueryRepository;
-import com.example.backend.business.web.member.presentation.member.dto.response.FollowHistoryExistResponse;
+import com.example.backend.business.web.member.presentation.follow.dto.response.FollowHistoryExistResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
