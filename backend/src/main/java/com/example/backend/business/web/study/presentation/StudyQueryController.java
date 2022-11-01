@@ -31,7 +31,7 @@ public class StudyQueryController {
     private final StudyQueryFacade studyQueryFacade;
 
     @GetMapping("/{studyId}")
-    public ResponseEntity<StudyResponse> findById(@PathVariable Long studyId,
+    public ResponseEntity<StudyResponse> findByIdAndIncreaseViewCount(@PathVariable Long studyId,
                                                   HttpServletRequest httpServletRequest) {
 
         StudyResponse response = studyQueryFacade.findByIdAndIncreaseViewCount(
