@@ -13,7 +13,6 @@ import com.example.backend.business.web.comment.application.CommentQueryServices
 import com.example.backend.business.web.member.application.member.MemberQueryService;
 import com.example.backend.business.web.study.application.StudyQueryServices;
 import com.example.backend.common.exception.BusinessException;
-import com.example.backend.common.exception.study.StudyTypeException;
 import lombok.RequiredArgsConstructor;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
@@ -23,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.concurrent.TimeUnit;
 
 import static com.example.backend.common.exception.member.MemberTypeException.MEMBER_NOT_FOUND_EXCEPTION;
+import static com.example.backend.common.exception.study.StudyTypeException.STUDY_NOT_FOUND_EXCEPTION;
 
 @Component
 @RequiredArgsConstructor
@@ -60,11 +60,14 @@ public class CommentCommandFacade {
         RLock lock = redissonClient.getLock(studyId.toString());
         try {
             boolean available = lock.tryLock(2, 1, TimeUnit.SECONDS);
+
             if (!available) {
                 Thread.sleep(500);
             }
-            Study findStudy = studyQueryServices.findById(studyId).orElseThrow(() -> new BusinessException(StudyTypeException.STUDY_NOT_FOUND_EXCEPTION));
+
+            Study findStudy = studyQueryServices.findById(studyId).orElseThrow(() -> new BusinessException(STUDY_NOT_FOUND_EXCEPTION));
             Member writer = memberQueryService.findById(memberId).orElseThrow(() -> new BusinessException(MEMBER_NOT_FOUND_EXCEPTION));
+
             return commentCommandService.writeComment(writer, findStudy, content);
         } catch (InterruptedException e) {
             throw new RuntimeException();
@@ -99,12 +102,15 @@ public class CommentCommandFacade {
         RLock lock = redissonClient.getLock(commentParentId.toString());
         try {
             boolean available = lock.tryLock(2, 1, TimeUnit.SECONDS);
+
             if (!available) {
                 Thread.sleep(500);
             }
+
             Member writer = memberQueryService.findById(memberId).orElseThrow(() -> new BusinessException(MEMBER_NOT_FOUND_EXCEPTION));
+
             Comment newReComment = commentCommandService.writeReComment(writer, commentParentId, content);
-            commentQueryServices.existCommentParent(commentParentId);
+            commentQueryServices.exist(commentParentId);
             return newReComment;
         } catch (InterruptedException e) {
             throw new RuntimeException();
@@ -138,7 +144,7 @@ public class CommentCommandFacade {
     @Transactional
     public void existValidation(StudyId studyId, CommentParentId commentParentId) {
         studyQueryServices.exist(studyId);
-        commentQueryServices.existCommentParent(commentParentId);
+        commentQueryServices.exist(commentParentId);
     }
 
     /**
@@ -162,6 +168,7 @@ public class CommentCommandFacade {
             }
 
             Member writer = memberQueryService.findById(memberId).orElseThrow(() -> new BusinessException(MEMBER_NOT_FOUND_EXCEPTION));
+
             commentCommandService.deleteComment(writer.getMemberIdAsValue(), commentId);
         } catch (InterruptedException e) {
             throw new RuntimeException();
@@ -197,6 +204,7 @@ public class CommentCommandFacade {
             }
 
             Member writer = memberQueryService.findById(memberId).orElseThrow(() -> new BusinessException(MEMBER_NOT_FOUND_EXCEPTION));
+
             commentCommandService.deleteReComment(writer.getMemberIdAsValue(), commentParentId, commentId);
             existValidation(studyId, commentParentId);
         } catch (InterruptedException e) {

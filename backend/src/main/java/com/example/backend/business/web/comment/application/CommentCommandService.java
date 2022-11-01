@@ -21,7 +21,7 @@ import static com.example.backend.common.exception.comment.CommentNotFoundExcept
 @RequiredArgsConstructor
 public class CommentCommandService {
 
-    private final CommentQueryDslQueryRepository commentCommandRepository;
+    private final CommentQueryDslQueryRepository commentQueryDslQueryRepository;
     private final CommentQueryDslCommandRepository commentQueryDslCommandRepository;
 
     @Transactional
@@ -41,7 +41,7 @@ public class CommentCommandService {
                                   CommentParentId commentParentId,
                                   CommentContent content) {
 
-        Comment findCommentParent = commentCommandRepository.findCommentByParentId(commentParentId).orElseThrow(()->new BusinessException(COMMENT_NOT_FOUND_EXCEPTION));
+        Comment findCommentParent = commentQueryDslQueryRepository.findByParentId(commentParentId).orElseThrow(()->new BusinessException(COMMENT_NOT_FOUND_EXCEPTION));
         Study findStudy = findCommentParent.getStudy();
 
         Comment newComment = Comment.writeReComment(writer, findStudy, content, commentParentId);
@@ -56,11 +56,11 @@ public class CommentCommandService {
                               CommentId commentId,
                               CommentContent content) {
 
-        Comment findComment = commentCommandRepository.findCommentById(commentId).orElseThrow(()->new BusinessException(COMMENT_NOT_FOUND_EXCEPTION));
+        Comment findComment = commentQueryDslQueryRepository.findById(commentId).orElseThrow(()->new BusinessException(COMMENT_NOT_FOUND_EXCEPTION));
 
         if (findComment.hasParentId()) {
             findComment.updateContent(memberId, content);
-            commentCommandRepository.exist(CommentParentId.from(findComment.getCommentParentId()));
+            commentQueryDslQueryRepository.exist(CommentParentId.from(findComment.getCommentParentId()));
             return;
         }
 
@@ -72,14 +72,14 @@ public class CommentCommandService {
                                 CommentId commentId,
                                 CommentContent content) {
 
-        Comment findReComment = commentCommandRepository.findCommentById(commentId).orElseThrow(()->new BusinessException(COMMENT_NOT_FOUND_EXCEPTION));
+        Comment findReComment = commentQueryDslQueryRepository.findById(commentId).orElseThrow(()->new BusinessException(COMMENT_NOT_FOUND_EXCEPTION));
 
         findReComment.updateContent(memberId, content);
     }
 
     @Transactional
     public void deleteComment(MemberId memberId, CommentId commentId) {
-        Comment findComment = commentCommandRepository.findCommentById(commentId).orElseThrow(()->new BusinessException(COMMENT_NOT_FOUND_EXCEPTION));
+        Comment findComment = commentQueryDslQueryRepository.findById(commentId).orElseThrow(()->new BusinessException(COMMENT_NOT_FOUND_EXCEPTION));
         Study findStudy = findComment.getStudy();
 
         findComment.delete(memberId);
@@ -91,8 +91,8 @@ public class CommentCommandService {
                                 CommentParentId commentParentId,
                                 CommentId commentId) {
 
-        Comment findComment = commentCommandRepository.findCommentByParentId(commentParentId).orElseThrow(()->new BusinessException(COMMENT_NOT_FOUND_EXCEPTION));
-        Comment findRecomment = commentCommandRepository.findCommentById(commentId).orElseThrow(()->new BusinessException(COMMENT_PARENT_NOT_FOUND_EXCEPTION));
+        Comment findComment = commentQueryDslQueryRepository.findByParentId(commentParentId).orElseThrow(()->new BusinessException(COMMENT_PARENT_NOT_FOUND_EXCEPTION));
+        Comment findRecomment = commentQueryDslQueryRepository.findById(commentId).orElseThrow(()->new BusinessException(COMMENT_NOT_FOUND_EXCEPTION));
         Study findStudy = findRecomment.getStudy();
 
         findRecomment.delete(memberId);

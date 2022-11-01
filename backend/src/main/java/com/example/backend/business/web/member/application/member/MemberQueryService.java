@@ -34,11 +34,6 @@ public class MemberQueryService {
     }
 
     @Transactional(readOnly = true)
-    public Optional<Member> findMemberAndStudyJoinRequestsById(MemberId memberId) {
-        return memberQueryDslQueryRepository.findStudyJoinRequestsById(memberId);
-    }
-
-    @Transactional(readOnly = true)
     public NickNameExistResponse validateDuplicatedNickName(NickName nickName) {
         return memberQueryDslQueryRepository.validateDuplicatedNickName(nickName);
     }

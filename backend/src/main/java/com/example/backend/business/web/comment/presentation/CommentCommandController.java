@@ -16,7 +16,6 @@ import com.example.backend.business.web.comment.presentation.dto.response.Commen
 import com.example.backend.common.login.annotation.Authenticated;
 import com.example.backend.common.login.model.authentication.AuthenticatedMember;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,6 +24,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import static org.springframework.http.HttpStatus.CREATED;
 
 @RestController
 @RequiredArgsConstructor
@@ -43,7 +44,7 @@ public class CommentCommandController {
                 CommentContent.from(request.getContent())
         );
 
-        return new ResponseEntity<>(CommentWriteResponse.of(newComment), HttpStatus.CREATED);
+        return new ResponseEntity<>(CommentWriteResponse.of(newComment), CREATED);
     }
 
     @PostMapping("/{commentId}/recomments")
@@ -57,7 +58,7 @@ public class CommentCommandController {
                 CommentContent.from(request.getContent())
         );
 
-        return new ResponseEntity<>(CommentReWriteResponse.of(newReComment), HttpStatus.CREATED);
+        return new ResponseEntity<>(CommentReWriteResponse.of(newReComment), CREATED);
     }
 
     @PutMapping("/{commentId}")
@@ -100,7 +101,7 @@ public class CommentCommandController {
                 CommentId.from(commentId)
         );
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{commentParentId}/recomments/{commentId}")
@@ -116,6 +117,6 @@ public class CommentCommandController {
                 CommentId.from(commentId)
         );
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 }

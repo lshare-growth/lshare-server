@@ -42,7 +42,7 @@ package com.example.backend.lshare.business.presentation.comment;//package com.e
 //        List<CommentResponse> content = List.of(commentResponse);
 //        Pageable pageable = PageRequest.of(0, 10);
 //
-//        when(commentQueryFacade.findCommentsByStudyId(anyLong(), StudyId.from(anyLong()), any()))
+//        when(commentQueryFacade.findByIds(anyLong(), StudyId.from(anyLong()), any()))
 //                .thenReturn(new CustomSlice<>(new SliceImpl<>(content, pageable, true)));
 //
 //        mockMvc.perform(get("/api/comments/study/{studyId}", 1L)
