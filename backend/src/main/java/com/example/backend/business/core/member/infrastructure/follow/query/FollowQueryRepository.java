@@ -8,7 +8,6 @@ import com.example.backend.business.web.member.presentation.follow.dto.response.
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.EntityManager;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,11 +19,9 @@ import static com.example.backend.business.core.member.entity.QMember.member;
 public class FollowQueryRepository {
 
     private final JPAQueryFactory queryFactory;
-    private final EntityManager entityManager;
 
-    public FollowQueryRepository(JPAQueryFactory queryFactory, EntityManager entityManager) {
+    public FollowQueryRepository(JPAQueryFactory queryFactory) {
         this.queryFactory = queryFactory;
-        this.entityManager = entityManager;
     }
 
     public FollowHistoryExistResponse findFollowHistoryById(MemberId sourceId, MemberId targetId) {
@@ -51,6 +48,8 @@ public class FollowQueryRepository {
         return queryFactory.selectFrom(follow)
                 .join(follow.source, member)
                 .fetchJoin()
+                .join(follow.target, member)
+                .fetchJoin()
                 .where(
                         follow.target.memberId.eq(memberId.getMemberId())
                                 .and(follow.source.memberId.lt(cursor.getNext()))
@@ -62,8 +61,8 @@ public class FollowQueryRepository {
 
     public List<Long> findFollowOrNot(MemberId memberId, List<Long> targetIds) {
         List<Follow> followerList = queryFactory.selectFrom(follow)
-                .join(follow.source, member)
-                .on(follow.target.memberId.in(targetIds))
+                .join(follow.target, member)
+                .on(member.memberId.in(targetIds))
                 .where(follow.source.memberId.eq(memberId.getMemberId()))
                 .fetch();
 
