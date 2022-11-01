@@ -20,7 +20,10 @@ public class LikeQueryDslQueryRepository {
     public LikeClicked exist(MemberId memberId, StudyId studyId) {
         Integer result = queryFactory.selectOne()
                 .from(like)
-                .where(like.study.studyId.eq(studyId.getStudyId()).and(like.memberId.eq(memberId)))
+                .where(
+                        like.study.studyId.eq(studyId.getStudyId())
+                                .and(like.memberId.eq(memberId))
+                )
                 .fetchFirst();
 
         return result != null ? LikeClicked.TRUE : LikeClicked.FALSE;
