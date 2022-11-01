@@ -4,8 +4,9 @@ import com.example.backend.business.core.common.values.Cursor;
 import com.example.backend.business.core.member.entity.values.Followers;
 import com.example.backend.business.core.member.entity.values.MemberId;
 import com.example.backend.business.web.member.facade.follow.FollowQueryFacade;
-import com.example.backend.business.web.member.presentation.member.dto.response.FollowHistoryExistResponse;
-import com.example.backend.business.web.member.presentation.member.dto.response.FollowerListResponse;
+import com.example.backend.business.web.member.presentation.follow.dto.response.FollowHistoryExistResponse;
+import com.example.backend.business.web.member.presentation.follow.dto.response.FollowerListResponse;
+import com.example.backend.business.web.member.presentation.follow.dto.response.FollowingListResponse;
 import com.example.backend.common.configuration.common.page.CursorPageable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -46,19 +47,17 @@ public class FollowQueryController {
     }
 
     @GetMapping("/{memberId}/friendship/following-list")
-    public ResponseEntity<FollowerListResponse> findFollowingList(@PathVariable Long memberId,
-                                                                  @CursorPageable Cursor cursor,
-                                                                  HttpServletRequest httpServletRequest) {
+    public ResponseEntity<FollowingListResponse> findFollowingList(@PathVariable Long memberId,
+                                                                   @CursorPageable Cursor cursor,
+                                                                   HttpServletRequest httpServletRequest) {
 
         Followers followingList = followQueryFacade.findFollowingListById(
                 MemberId.from(memberId),
                 cursor
         );
 
-        boolean hasNext = followingList.hasNext();
-
         if (isGuest(httpServletRequest)) {
-            return ResponseEntity.ok(FollowerListResponse.of(followingList, hasNext));
+            return ResponseEntity.ok(FollowingListResponse.of(followingList));
         }
 
         List<Long> myFollowerList = getMyFollwerList(
@@ -66,7 +65,7 @@ public class FollowQueryController {
                 followingList.getSourceIds()
         );
 
-        return ResponseEntity.ok(FollowerListResponse.of(followingList, myFollowerList, hasNext));
+        return ResponseEntity.ok(FollowingListResponse.of(followingList, myFollowerList));
     }
 
     @GetMapping("/{memberId}/friendship/follower-list")
@@ -79,10 +78,8 @@ public class FollowQueryController {
                 cursor
         );
 
-        boolean hasNext = followerList.hasNext();
-
         if (isGuest(httpServletRequest)) {
-            return ResponseEntity.ok(FollowerListResponse.of(followerList, hasNext));
+            return ResponseEntity.ok(FollowerListResponse.of(followerList));
         }
 
         List<Long> myFollowerList = getMyFollwerList(
@@ -90,7 +87,7 @@ public class FollowQueryController {
                 followerList.getTargetIds()
         );
 
-        return ResponseEntity.ok(FollowerListResponse.of(followerList, myFollowerList, hasNext));
+        return ResponseEntity.ok(FollowerListResponse.of(followerList, myFollowerList));
     }
 
     private List<Long> getMyFollwerList(MemberId memberId, List<Long> getTargetIds) {

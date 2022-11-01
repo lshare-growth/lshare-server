@@ -1,4 +1,4 @@
-package com.example.backend.business.web.member.presentation.member.dto.request;
+package com.example.backend.business.web.member.presentation.follow.dto.request;
 
 public class UnFollowRequest {
 

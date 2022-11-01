@@ -4,7 +4,7 @@ import com.example.backend.business.core.common.values.Cursor;
 import com.example.backend.business.core.member.entity.Follow;
 import com.example.backend.business.core.member.entity.Member;
 import com.example.backend.business.core.member.entity.values.MemberId;
-import com.example.backend.business.web.member.presentation.member.dto.response.FollowHistoryExistResponse;
+import com.example.backend.business.web.member.presentation.follow.dto.response.FollowHistoryExistResponse;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.stereotype.Repository;
 
@@ -30,7 +30,10 @@ public class FollowQueryRepository {
     public FollowHistoryExistResponse findFollowHistoryById(MemberId sourceId, MemberId targetId) {
         Integer result = queryFactory.selectOne()
                 .from(follow)
-                .where(follow.source.memberId.eq(sourceId.getMemberId()).and(follow.target.memberId.eq(targetId.getMemberId())))
+                .where(
+                        follow.source.memberId.eq(sourceId.getMemberId())
+                                .and(follow.target.memberId.eq(targetId.getMemberId()))
+                )
                 .fetchFirst();
         return new FollowHistoryExistResponse(result);
     }
@@ -48,8 +51,10 @@ public class FollowQueryRepository {
         return queryFactory.selectFrom(follow)
                 .join(follow.source, member)
                 .fetchJoin()
-                .where(follow.target.memberId.eq(memberId.getMemberId())
-                        .and(follow.source.memberId.lt(cursor.getNext())))
+                .where(
+                        follow.target.memberId.eq(memberId.getMemberId())
+                                .and(follow.source.memberId.lt(cursor.getNext()))
+                )
                 .limit(cursor.getPageSize() + 1)
                 .orderBy(member.memberId.desc())
                 .fetch();
@@ -85,7 +90,10 @@ public class FollowQueryRepository {
         return queryFactory.selectFrom(follow)
                 .join(follow.target, member)
                 .fetchJoin()
-                .where(follow.source.memberId.lt(cursor.getNext()))
+                .where(
+                        follow.source.memberId.eq(memberId.getMemberId())
+                                .and(follow.target.memberId.lt(cursor.getNext()))
+                )
                 .limit(cursor.getPageSize() + 1)
                 .orderBy(member.memberId.desc())
                 .fetch();
