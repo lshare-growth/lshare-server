@@ -1,6 +1,6 @@
 package com.example.backend.business.core.member.entity;
 
-import com.example.backend.business.core.common.values.DateTime;
+import com.example.backend.business.core.common.values.CreatedAt;
 import com.fasterxml.uuid.Generators;
 
 import javax.persistence.Column;
@@ -28,7 +28,7 @@ public class Follow {
     private Member target;
 
     @Embedded
-    private DateTime dateTime;
+    private CreatedAt createdAt;
 
     /**
      * @Nullary-Constructor. JPA 기본 생성자로 member 외부 패키지에서 호출하지 말 것.
@@ -41,12 +41,12 @@ public class Follow {
         this.UUID = createUUID();
         this.source = source;
         this.target = target;
-        this.dateTime = DateTime.initDateTime();
+        this.createdAt = CreatedAt.initCreatedAt();
     }
 
     private void validateFollow(Member source, Member target) {
         if (source.equals(target)) {
-            throw new IllegalStateException();
+            throw new IllegalStateException("팔로잉 주체와 대상이 같을 수 없습니다.");
         }
     }
 
@@ -66,12 +66,8 @@ public class Follow {
         return target;
     }
 
-    public DateTime getDateTime() {
-        return dateTime;
-    }
-
-    public boolean isFollowing(Member target) {
-        return this.target.equals(target);
+    public CreatedAt getCreatedAt() {
+        return createdAt;
     }
 
     @Override
@@ -87,8 +83,8 @@ public class Follow {
         return Objects.hash(getSource(), getTarget());
     }
 
-//    @Override
-//    public String toString() {
-//        return String.format("팔로우 주체: %s, 팔로잉 대상: %s", source, target);
-//    }
+    @Override
+    public String toString() {
+        return UUID.toString();
+    }
 }
