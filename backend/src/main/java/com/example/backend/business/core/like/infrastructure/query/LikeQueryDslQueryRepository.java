@@ -25,7 +25,6 @@ public class LikeQueryDslQueryRepository {
                                 .and(like.memberId.eq(memberId))
                 )
                 .fetchFirst();
-
         return result != null ? LikeClicked.TRUE : LikeClicked.FALSE;
     }
 }
