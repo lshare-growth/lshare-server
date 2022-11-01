@@ -28,7 +28,11 @@ public class ReactionQueryDslCommandRepository {
 
     public void delete(MemberId memberId, CommentId commentId, CommentReactionEmotion commentReactionEmotion) {
         queryFactory.delete(commentReaction)
-                .where(commentReaction.memberId.eq(memberId).and(commentReaction.comment.commentId.eq(commentId.getCommentId())).and(commentReaction.emotion.eq(commentReactionEmotion)))
+                .where(
+                        commentReaction.memberId.eq(memberId)
+                                .and(commentReaction.comment.commentId.eq(commentId.getCommentId()))
+                                .and(commentReaction.emotion.eq(commentReactionEmotion))
+                )
                 .execute();
     }
 }
