@@ -46,7 +46,7 @@ public class Follow {
 
     private void validateFollow(Member source, Member target) {
         if (source.equals(target)) {
-            throw new IllegalStateException();
+            throw new IllegalStateException("팔로잉 주체와 대상이 같을 수 없습니다.");
         }
     }
 
@@ -68,10 +68,6 @@ public class Follow {
 
     public CreatedAt getCreatedAt() {
         return createdAt;
-    }
-
-    public boolean isFollowing(Member target) {
-        return this.target.equals(target);
     }
 
     @Override
