@@ -5,7 +5,7 @@ import com.example.backend.business.core.member.entity.values.MemberId;
 import com.example.backend.business.web.member.application.follow.FollowCommandService;
 import com.example.backend.business.web.member.application.follow.FollowQueryService;
 import com.example.backend.business.web.member.application.member.MemberQueryService;
-import com.example.backend.business.web.member.presentation.member.dto.response.FollowHistoryExistResponse;
+import com.example.backend.business.web.member.presentation.follow.dto.response.FollowHistoryExistResponse;
 import com.example.backend.common.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
 import org.redisson.api.RLock;

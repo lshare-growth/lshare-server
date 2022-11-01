@@ -1,4 +1,4 @@
-package com.example.backend.business.web.member.presentation.member.dto.response;
+package com.example.backend.business.web.member.presentation.follow.dto.response;
 
 import com.example.backend.business.core.member.entity.FollowHistory;
 
