@@ -17,7 +17,6 @@ import com.example.backend.business.web.study.presentation.dto.response.StudyCre
 import com.example.backend.common.login.annotation.Authenticated;
 import com.example.backend.common.login.model.authentication.AuthenticatedMember;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,6 +25,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import static org.springframework.http.HttpStatus.CREATED;
 
 @RestController
 @RequiredArgsConstructor
@@ -44,7 +45,7 @@ public class StudyCommandController {
                 TagNames.from(request.getHashTags())
         );
 
-        return new ResponseEntity<>(StudyCreateResponse.of(newStudy), HttpStatus.CREATED);
+        return new ResponseEntity<>(StudyCreateResponse.of(newStudy), CREATED);
     }
 
     @PutMapping("/{studyId}")
@@ -90,6 +91,6 @@ public class StudyCommandController {
                 StudyId.from(studyId)
         );
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 }

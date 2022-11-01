@@ -8,28 +8,28 @@ import java.util.List;
 
 public class StudiesResponse {
 
-    private final CustomPage<StudyPageResponse> studies;
+    private final CustomPage<StudySearchResponse> studies;
     private final List<StudyHashTagResponse> hashTags;
 
-    private StudiesResponse(Page<StudyPageResponse> studies) {
+    private StudiesResponse(Page<StudySearchResponse> studies) {
         this.studies = CustomPage.from(studies);
         this.hashTags = null;
     }
 
-    private StudiesResponse(Page<StudyPageResponse> studies, List<StudyHashTagResponse> hashTags) {
+    private StudiesResponse(Page<StudySearchResponse> studies, List<StudyHashTagResponse> hashTags) {
         this.studies = CustomPage.from(studies);
         this.hashTags = hashTags;
     }
 
-    public static StudiesResponse of(Page<StudyPageResponse> contents) {
+    public static StudiesResponse of(Page<StudySearchResponse> contents) {
         return new StudiesResponse(contents);
     }
 
-    public static StudiesResponse of(Page<StudyPageResponse> studyPage, List<StudyHashTagResponse> hashTags) {
+    public static StudiesResponse of(Page<StudySearchResponse> studyPage, List<StudyHashTagResponse> hashTags) {
         return new StudiesResponse(studyPage, hashTags);
     }
 
-    public CustomPage<StudyPageResponse> getStudies() {
+    public CustomPage<StudySearchResponse> getStudies() {
         return studies;
     }
 

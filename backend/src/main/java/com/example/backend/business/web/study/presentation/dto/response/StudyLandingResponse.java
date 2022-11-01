@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 
 import static org.apache.commons.lang3.builder.ToStringStyle.JSON_STYLE;
 
-public class StudySearchResponse {
+public class StudyLandingResponse {
 
     private final Long studyId;
     private final String title;
@@ -31,7 +31,7 @@ public class StudySearchResponse {
     private final int viewCount;
     private final int likeCount;
 
-    public StudySearchResponse(Study study) {
+    public StudyLandingResponse(Study study) {
         this.studyId = study.getStudyId();
         this.title = study.getTitle();
         this.content = study.getContent();
@@ -49,7 +49,7 @@ public class StudySearchResponse {
         this.likeCount = study.getLikeCount();
     }
 
-    public StudySearchResponse(StudyMember studyMember) {
+    public StudyLandingResponse(StudyMember studyMember) {
         Study study = studyMember.getStudy();
         Member studyLeader = studyMember.getMember();
 
@@ -70,7 +70,7 @@ public class StudySearchResponse {
         this.likeCount = study.getLikeCount();
     }
 
-    public StudySearchResponse(StudyHashTag studyHashTag) {
+    public StudyLandingResponse(StudyHashTag studyHashTag) {
         this.studyId = studyHashTag.getStudyId();
         this.title = studyHashTag.getStudy().getTitle();
         this.content = studyHashTag.getStudy().getContent();
