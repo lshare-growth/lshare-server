@@ -26,11 +26,25 @@ public class CommentQueryController {
     private final CommentQueryFacade commentQueryFacade;
 
     @GetMapping("/study/{studyId}")
-    public ResponseEntity<CustomSlice<CommentResponse>> findCommentsByStudyId(@PathVariable Long studyId,
-                                                                              Pageable pageable,
-                                                                              HttpServletRequest httpServletRequest) {
+    public ResponseEntity<CustomSlice<CommentResponse>> findById(@PathVariable Long studyId,
+                                                                 Pageable pageable,
+                                                                 HttpServletRequest httpServletRequest) {
 
-        CustomSlice<CommentResponse> response = commentQueryFacade.findCommentsByStudyId(
+        CustomSlice<CommentResponse> response = commentQueryFacade.findById(
+                getMemberId(httpServletRequest),
+                StudyId.from(studyId),
+                pageable
+        );
+
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/study/{studyId}/v2")
+    public ResponseEntity<CommentPageResponse> findByV2(@PathVariable Long studyId,
+                                                        Pageable pageable,
+                                                        HttpServletRequest httpServletRequest) {
+
+        CommentPageResponse response = commentQueryFacade.findByIdV2(
                 getMemberId(httpServletRequest),
                 StudyId.from(studyId),
                 pageable
@@ -40,27 +54,13 @@ public class CommentQueryController {
     }
 
     @GetMapping("/commentParent/{commentParentId}")
-    public ResponseEntity<CustomSlice<CommentResponse>> findCommentsByParentId(@PathVariable Long commentParentId,
-                                                                               Pageable pageable,
-                                                                               HttpServletRequest httpServletRequest) {
-
-        CustomSlice<CommentResponse> response = commentQueryFacade.findCommentsByParentId(
-                getMemberId(httpServletRequest),
-                CommentParentId.from(commentParentId),
-                pageable
-        );
-
-        return ResponseEntity.ok(response);
-    }
-
-    @GetMapping("/study/{studyId}/v2")
-    public ResponseEntity<CommentPageResponse> findCommentsByStudyIdV2(@PathVariable Long studyId,
+    public ResponseEntity<CustomSlice<CommentResponse>> findByParentId(@PathVariable Long commentParentId,
                                                                        Pageable pageable,
                                                                        HttpServletRequest httpServletRequest) {
 
-        CommentPageResponse response = commentQueryFacade.findCommentsByStudyIdV2(
+        CustomSlice<CommentResponse> response = commentQueryFacade.findByParentId(
                 getMemberId(httpServletRequest),
-                StudyId.from(studyId),
+                CommentParentId.from(commentParentId),
                 pageable
         );
 
