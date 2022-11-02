@@ -32,7 +32,7 @@ public class OauthManager {
 
     @Transactional(readOnly = true)
     public Boolean validatePageAuthorization(Long memberId, Long studyId) {
-        return memberQueryDslQueryRepository.validatePageAuthorizationByMemberIdAndStudyId(memberId, studyId);
+        return memberQueryDslQueryRepository.validatePageAuthorizationById(memberId, studyId);
     }
 
     @Transactional(readOnly = true)
