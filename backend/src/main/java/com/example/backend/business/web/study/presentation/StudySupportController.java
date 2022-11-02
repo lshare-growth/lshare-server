@@ -5,6 +5,7 @@ import com.example.backend.business.web.study.presentation.dto.response.Progress
 import com.example.backend.common.mapper.api.EnumMapper;
 import com.example.backend.common.mapper.api.EnumMapperValue;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.CacheControl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +15,7 @@ import java.util.List;
 
 import static com.example.backend.common.mapper.keys.CacheKey.DISTRICTS;
 import static com.example.backend.common.mapper.keys.CacheKey.PROGRESS_OF_STUDY;
+import static java.util.concurrent.TimeUnit.DAYS;
 
 @RestController
 @RequiredArgsConstructor
@@ -29,7 +31,10 @@ public class StudySupportController {
                 DISTRICTS
         );
 
-        return ResponseEntity.ok(DistrictResponse.of(districts));
+        return ResponseEntity.ok()
+                .eTag("study-register-supports")
+                .cacheControl(CacheControl.maxAge(30, DAYS))
+                .body(DistrictResponse.of(districts));
     }
 
     @GetMapping("/progress-of-study")
@@ -39,6 +44,9 @@ public class StudySupportController {
                 PROGRESS_OF_STUDY
         );
 
-        return ResponseEntity.ok(ProgressOfStudyResponse.of(progressOfStudy));
+        return ResponseEntity.ok()
+                .eTag("study-register-supports")
+                .cacheControl(CacheControl.maxAge(30, DAYS))
+                .body(ProgressOfStudyResponse.of(progressOfStudy));
     }
 }

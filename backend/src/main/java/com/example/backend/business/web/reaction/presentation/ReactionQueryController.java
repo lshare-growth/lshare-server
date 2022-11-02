@@ -4,6 +4,7 @@ import com.example.backend.business.web.reaction.presentation.dto.response.React
 import com.example.backend.common.mapper.api.EnumMapper;
 import com.example.backend.common.mapper.api.EnumMapperValue;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.CacheControl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 import static com.example.backend.common.mapper.keys.CacheKey.COMMENT_REACTIONS;
+import static java.util.concurrent.TimeUnit.DAYS;
 
 @RestController
 @RequiredArgsConstructor
@@ -27,6 +29,9 @@ public class ReactionQueryController {
                 COMMENT_REACTIONS
         );
 
-        return ResponseEntity.ok(ReactionsResponse.of(reactions));
+        return ResponseEntity.ok()
+                .eTag("reaction-list")
+                .cacheControl(CacheControl.maxAge(30, DAYS))
+                .body(ReactionsResponse.of(reactions));
     }
 }
