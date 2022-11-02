@@ -8,6 +8,7 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
+import org.springframework.web.filter.ShallowEtagHeaderFilter;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
@@ -39,4 +40,14 @@ public class FilterConfiguration implements WebMvcConfigurer {
         registrationBean.addUrlPatterns("/*");
         return registrationBean;
     }
+
+    @Bean(name = "etagFilter")
+    public FilterRegistrationBean<ShallowEtagHeaderFilter> shallowEtagHeaderFilter() {
+        FilterRegistrationBean<ShallowEtagHeaderFilter> filterRegistrationBean = new FilterRegistrationBean<>(new ShallowEtagHeaderFilter());
+        filterRegistrationBean.addUrlPatterns("/api/study-supports/**");
+        filterRegistrationBean.addUrlPatterns("/api/reactions/comment-reactions");
+        filterRegistrationBean.addUrlPatterns("/api/hashtags/top-searched-hashtags");
+        return filterRegistrationBean;
+    }
+
 }
