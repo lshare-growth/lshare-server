@@ -13,7 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
+
+import static java.util.concurrent.TimeUnit.DAYS;
 
 @RestController
 @RequiredArgsConstructor
@@ -28,8 +29,8 @@ public class HashTagQueryController {
         List<HashTagResponse> hashTags = hashTagQueryFacade.findTopSearchedHashTags();
 
         return ResponseEntity.ok()
-                .eTag("v1")
-                .cacheControl(CacheControl.maxAge(1, TimeUnit.DAYS))
+                .eTag("lshare-top-searched-hashtags")
+                .cacheControl(CacheControl.maxAge(1, DAYS))
                 .body(StudyHashTagsResponse.of(hashTags));
     }
 
