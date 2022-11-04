@@ -267,6 +267,19 @@ public class Member {
         lastLoginIpAddress.validateIpAddress(currentLoginIpAddress.getCurrentLoginIpAddress());
     }
 
+    public void updateIpAddress(CurrentLoginIpAddress currentLoginIpAddress) {
+        updateLastLoginIpAddress(currentLoginIpAddress);
+        this.currentLoginIpAddress = currentLoginIpAddress;
+    }
+
+    private void updateLastLoginIpAddress(CurrentLoginIpAddress currentLoginIpAddress) {
+        if (Objects.isNull(this.currentLoginIpAddress)) {
+            this.lastLoginIpAddress = LastLoginIpAddress.from(currentLoginIpAddress.getCurrentLoginIpAddress());
+            return;
+        }
+        this.lastLoginIpAddress = LastLoginIpAddress.from(this.currentLoginIpAddress.getCurrentLoginIpAddress());
+    }
+
     public void delete() {
         this.deleted = Deleted.TRUE;
     }

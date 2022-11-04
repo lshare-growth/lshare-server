@@ -15,14 +15,14 @@ public class CurrentLoginIpAddress {
     }
 
     private CurrentLoginIpAddress(String currentLoginIpAddress) {
-        validateCurrentLoginIpAddress(currentLoginIpAddress);
-        this.currentLoginIpAddress = currentLoginIpAddress;
+        this.currentLoginIpAddress = extractIpAddress(currentLoginIpAddress);
     }
 
-    private void validateCurrentLoginIpAddress(String currentLoginIpAddress) {
-        if (Objects.isNull(currentLoginIpAddress)) {
-            throw new IllegalArgumentException("올바르지 않은 IP 주소입니다.");
+    private String extractIpAddress(String lastLoginIpAddress) {
+        if (Objects.isNull(lastLoginIpAddress) || lastLoginIpAddress.equals("")) {
+            return "UN_KNOWN";
         }
+        return lastLoginIpAddress;
     }
 
     public static CurrentLoginIpAddress from(String currentLoginIpAddress) {
@@ -44,5 +44,10 @@ public class CurrentLoginIpAddress {
     @Override
     public int hashCode() {
         return Objects.hash(currentLoginIpAddress);
+    }
+
+    @Override
+    public String toString() {
+        return currentLoginIpAddress;
     }
 }
