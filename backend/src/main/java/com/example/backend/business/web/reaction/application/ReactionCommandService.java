@@ -28,9 +28,26 @@ public class ReactionCommandService {
                                CommentReactionEmotion commentReactionEmotion) {
 
         if (reactionClicked.isTrue()) {
-            reactionQueryDslCommandRepository.delete(MemberId.from(member.getMemberId()), CommentId.from(comment.getCommentId()), commentReactionEmotion);
+            deleteReaction(member, comment, commentReactionEmotion);
             return;
         }
-        reactionQueryDslCommandRepository.save(CommentReaction.from(comment, StudyId.from(study.getStudyId()), MemberId.from(member.getMemberId()), commentReactionEmotion));
+        addReaction(member, study, comment, commentReactionEmotion);
+    }
+
+    private void deleteReaction(Member member, Comment comment, CommentReactionEmotion commentReactionEmotion) {
+        reactionQueryDslCommandRepository.delete(
+                MemberId.from(member.getMemberId()),
+                CommentId.from(comment.getCommentId()),
+                commentReactionEmotion
+        );
+    }
+
+    private void addReaction(Member member, Study study, Comment comment, CommentReactionEmotion commentReactionEmotion) {
+        reactionQueryDslCommandRepository.save(
+                CommentReaction.from(comment,
+                        StudyId.from(study.getStudyId()),
+                        MemberId.from(member.getMemberId()),
+                        commentReactionEmotion)
+        );
     }
 }
