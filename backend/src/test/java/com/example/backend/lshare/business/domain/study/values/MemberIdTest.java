@@ -1,6 +1,7 @@
 package com.example.backend.lshare.business.domain.study.values;
 
 import com.example.backend.business.core.member.entity.values.MemberId;
+import com.example.backend.common.exception.BusinessException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -21,7 +22,7 @@ class MemberIdTest {
         @NullSource
         @DisplayName("아이디가 Null이면 NullPointException이 발생한다.")
         void 회원_PK가_NULL일_경우_테스트(Long parameter) {
-            assertThrows(UnauthorizedAccessException.class, () -> MemberId.from(parameter));
+            assertThrows(BusinessException.class, () -> MemberId.from(parameter));
         }
 
         @ParameterizedTest

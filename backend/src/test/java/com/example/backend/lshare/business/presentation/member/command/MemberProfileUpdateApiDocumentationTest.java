@@ -10,6 +10,7 @@ import org.springframework.restdocs.payload.JsonFieldType;
 
 import java.time.LocalDate;
 
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
@@ -23,7 +24,7 @@ class MemberProfileUpdateApiDocumentationTest extends RestdocsController {
     @DisplayName("회원 프로필 수정 API Documentation")
     void MEMBER_FOLLOWING_API() throws Exception {
         MemberProfileUpdateRequest request = new MemberProfileUpdateRequest(
-                1L,
+                anyLong(),
                 "www.tistory.com",
                 "BUSAN",
                 LocalDate.of(1995, 10, 10),

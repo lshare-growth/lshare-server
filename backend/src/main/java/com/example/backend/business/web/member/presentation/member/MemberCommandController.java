@@ -58,6 +58,6 @@ public class MemberCommandController {
                 authenticatedMember.getAuthenticatedIdAsValue()
         );
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 }

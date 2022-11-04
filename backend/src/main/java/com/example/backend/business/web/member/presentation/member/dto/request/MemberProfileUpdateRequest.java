@@ -1,6 +1,7 @@
 package com.example.backend.business.web.member.presentation.member.dto.request;
 
 import com.example.backend.business.core.common.District;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.time.LocalDate;
 import java.util.Objects;
@@ -36,6 +37,7 @@ public class MemberProfileUpdateRequest {
         return district;
     }
 
+    @JsonIgnore
     public District getDistrictAsEnum() {
         if (Objects.isNull(district)) {
             return null;

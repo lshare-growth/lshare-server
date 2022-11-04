@@ -24,7 +24,7 @@ class CommentReactionUpdateApiDocumentationTest extends RestdocsController {
     void COMMENT_REACTION_UPDATE_API() throws Exception {
         ReactionUpdateRequest request = new ReactionUpdateRequest("❤️");
 
-        mockMvc.perform(post("/api/reactions/{studyId}/comments/{commentId}/reactions", STUDY_ID, COMMENT_ID)
+        mockMvc.perform(post("/api/reactions/studies/{studyId}/comments/{commentId}", STUDY_ID, COMMENT_ID)
                         .headers(getOauthRequestHeaders())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))

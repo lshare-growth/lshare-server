@@ -33,7 +33,7 @@ class ReCommentDeleteApiDocumentationTest extends RestdocsController {
                 .andDo(document("comment/recomment-delete",
                         RE_COMMENT_DELETE_PATH_PARAMETERS())
                 )
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
     }
 
     private static PathParametersSnippet RE_COMMENT_DELETE_PATH_PARAMETERS() {

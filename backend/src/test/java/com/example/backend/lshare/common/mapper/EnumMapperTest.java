@@ -22,7 +22,7 @@ class EnumMapperTest {
 
     @Nested
     @DisplayName("EnumMapper를 조회할때")
-    class EnumMapperReadTest {
+    class NestedTest {
 
         @DisplayName("key가 null또는 등록되지 않았을 경우 빈 리스트가 조회된다.")
         @ParameterizedTest

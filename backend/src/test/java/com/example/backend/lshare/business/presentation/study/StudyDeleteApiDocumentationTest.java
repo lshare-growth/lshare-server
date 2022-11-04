@@ -25,7 +25,7 @@ class StudyDeleteApiDocumentationTest extends RestdocsController {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .headers(getOauthRequestHeaders()))
-                .andExpect(status().isOk())
+                .andExpect(status().isNoContent())
                 .andDo(document("study/delete",
                         pathParameters(STUDY_DELETE_PATH_PARAMETER)))
                 .andDo(print());

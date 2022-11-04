@@ -154,6 +154,10 @@ public class Member {
         return nickName.getNickName();
     }
 
+    public Introduction getIntroductionAsValue() {
+        return introduction;
+    }
+
     public String getIntroduction() {
         return Objects.isNull(introduction) ? "" : introduction.getIntroduction();
     }
@@ -162,12 +166,20 @@ public class Member {
         return district;
     }
 
+    public BirthDate getBirthDateAsValue() {
+        return birthDate;
+    }
+
     public LocalDate getBirthDate() {
         return Objects.isNull(birthDate) ? null : birthDate.getBirthDate();
     }
 
     public String getProfileImageUrl() {
         return Objects.isNull(profileImageUrl) ? "" : profileImageUrl.getProfileImageUrl();
+    }
+
+    public BlogUrl getBlogUrlAsValue() {
+        return blogUrl;
     }
 
     public String getBlogUrl() {
@@ -182,7 +194,15 @@ public class Member {
         return followingCount.getFollowingCount();
     }
 
-    public void updateProfile(BlogUrl blogUrl, District district, BirthDate birthDate, Introduction introduction) {
+    public Deleted getDeleted() {
+        return deleted;
+    }
+
+    public void updateProfile(BlogUrl blogUrl,
+                              District district,
+                              BirthDate birthDate,
+                              Introduction introduction) {
+
         this.blogUrl = updateBlogUrl(this.blogUrl, blogUrl);
         this.district = updateDisctrict(this.district, district);
         this.birthDate = updateBirthDate(this.birthDate, birthDate);
