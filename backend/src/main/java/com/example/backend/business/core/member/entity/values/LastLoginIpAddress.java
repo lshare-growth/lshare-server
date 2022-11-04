@@ -8,18 +8,21 @@ public class LastLoginIpAddress {
 
     private String lastLoginIpAddress;
 
+    /**
+     * @Nullary-Constructor. JPA 기본 생성자로 member 외부 패키지에서 호출하지 말 것.
+     */
     protected LastLoginIpAddress() {
     }
 
     private LastLoginIpAddress(String lastLoginIpAddress) {
-        validateLastLoginIpAddress(lastLoginIpAddress);
-        this.lastLoginIpAddress = lastLoginIpAddress;
+        this.lastLoginIpAddress = extractIpAddress(lastLoginIpAddress);
     }
 
-    private void validateLastLoginIpAddress(String lastLoginIpAddress) {
-        if (Objects.isNull(lastLoginIpAddress)) {
-            throw new IllegalArgumentException("올바르지 않은 IP 주소입니다.");
+    private String extractIpAddress(String lastLoginIpAddress) {
+        if (Objects.isNull(lastLoginIpAddress) || lastLoginIpAddress.equals("")) {
+            return "UN_KNOWN";
         }
+        return lastLoginIpAddress;
     }
 
     public static LastLoginIpAddress from(String lastLoginIpAddress) {
