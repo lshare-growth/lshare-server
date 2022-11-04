@@ -4,10 +4,14 @@ import com.example.backend.business.core.member.entity.Member;
 import com.example.backend.business.web.comment.facade.CommentCommandFacade;
 import com.example.backend.business.web.comment.facade.CommentQueryFacade;
 import com.example.backend.business.web.comment.presentation.CommentCommandController;
+import com.example.backend.business.web.member.facade.follow.FollowCommandFacade;
 import com.example.backend.business.web.member.facade.member.MemberCommandFacade;
-import com.example.backend.business.web.member.presentation.member.MemberCommandController;
+import com.example.backend.business.web.member.facade.member.MemberQueryFacade;
+import com.example.backend.business.web.member.presentation.follow.FollowCommandController;
+import com.example.backend.business.web.member.presentation.member.MemberQueryController;
 import com.example.backend.business.web.reaction.facade.ReactionCommandFacade;
 import com.example.backend.business.web.reaction.presentation.ReactionCommandController;
+import com.example.backend.business.web.study.application.StudyCommandService;
 import com.example.backend.business.web.study.facade.StudyCommandFacade;
 import com.example.backend.business.web.study.presentation.StudyCommandController;
 import com.example.backend.business.web.study.presentation.StudySupportController;
@@ -24,6 +28,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -53,6 +58,9 @@ public abstract class RestdocsController {
     @Autowired
     protected ObjectMapper objectMapper;
 
+    @Autowired
+    protected StudyCommandService studyCommandService;
+
     @InjectMocks
     protected StudySupportController studySupportController;
 
@@ -69,7 +77,16 @@ public abstract class RestdocsController {
     protected MemberCommandFacade memberCommandFacade;
 
     @InjectMocks
-    protected MemberCommandController memberCommandController;
+    protected FollowCommandController followCommandController;
+
+    @Mock
+    protected FollowCommandFacade followCommandFacade;
+
+    @InjectMocks
+    protected MemberQueryController memberQueryController;
+
+    @MockBean
+    protected MemberQueryFacade memberQueryFacade;
 
     @MockBean
     protected ReactionCommandFacade reactionCommandFacade;

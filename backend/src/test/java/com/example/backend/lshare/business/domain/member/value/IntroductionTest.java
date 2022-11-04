@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -20,9 +21,9 @@ class IntroductionTest {
     class NestedTest {
 
         @Test
-        @DisplayName("자기소개는 입력했지만 빈 문자열을 입력했을때 IllegalArgumentException이 발생한다.")
+        @DisplayName("자기소개는 입력했지만 빈 문자열을 입력했을때 빈 문자열이 반환된다..")
         void 입력값이_공백일때_자기소개_입력_테스트() {
-            assertThrows(IllegalArgumentException.class, () -> Introduction.from(""));
+            assertEquals(Introduction.from("").getIntroduction(), "");
         }
 
         @ParameterizedTest

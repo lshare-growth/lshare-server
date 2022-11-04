@@ -13,11 +13,11 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @DisplayName("공지사항 제목 테스트")
-public class NoticeTitleTest {
+class NoticeTitleTest {
 
     @Nested
     @DisplayName("공지사항 제목을 생성할때")
-    class NoticeTitle_Test {
+    class NestedTest {
 
         @ParameterizedTest
         @NullAndEmptySource

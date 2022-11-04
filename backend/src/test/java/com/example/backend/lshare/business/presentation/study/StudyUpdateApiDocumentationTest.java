@@ -42,7 +42,7 @@ class StudyUpdateApiDocumentationTest extends RestdocsController {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
-                .andDo(document("study/updateFollow",
+                .andDo(document("study/update",
                         pathParameters(STUDY_UPDATE_PATH_PARAMETER),
                         requestFields(STUDY_UPDATE_REQUEST_FIELDS)))
                 .andDo(print());
