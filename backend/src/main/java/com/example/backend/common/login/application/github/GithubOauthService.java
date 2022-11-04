@@ -25,7 +25,11 @@ public class GithubOauthService implements LoginService {
     @Transactional
     @Override
     public Member save(OauthClient oauthClient) {
-        return memberQueryDslCommandRepository.save(new Member(oauthClient.getClientId(), oauthClient.getProfileImage()));
+        Member newMember = new Member(
+                oauthClient.getClientId(),
+                oauthClient.getProfileImage()
+        );
+        return memberQueryDslCommandRepository.save(newMember);
     }
 
     @Transactional

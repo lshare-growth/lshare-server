@@ -4,6 +4,7 @@ import com.example.backend.business.core.common.District;
 import com.example.backend.business.core.member.entity.Member;
 import com.example.backend.business.core.member.entity.values.BirthDate;
 import com.example.backend.business.core.member.entity.values.BlogUrl;
+import com.example.backend.business.core.member.entity.values.CurrentLoginIpAddress;
 import com.example.backend.business.core.member.entity.values.Introduction;
 import com.example.backend.business.core.member.entity.values.NickName;
 import com.example.backend.business.core.member.infrastructure.member.MemberJpaRepository;
@@ -37,6 +38,11 @@ public class MemberCommandService {
     @Transactional
     public void updatNickName(Member member, NickName nickName) {
         member.updateNickName(nickName);
+    }
+
+    @Transactional
+    public void updateIpAddress(Member member, CurrentLoginIpAddress ipAddress) {
+        member.updateIpAddress(ipAddress);
     }
 
     @Transactional
