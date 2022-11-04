@@ -27,7 +27,7 @@ public class MemberQueryController {
     private final MemberQueryFacade memberQueryFacade;
 
     @GetMapping("/my-profile")
-    public ResponseEntity<MemberProfileResponse> findMemberById(@Authenticated AuthenticatedMember authenticatedMember) {
+    public ResponseEntity<MemberProfileResponse> findById(@Authenticated AuthenticatedMember authenticatedMember) {
 
         Member findMember = memberQueryFacade.findById(
                 authenticatedMember.getAuthenticatedIdAsValue()
@@ -37,7 +37,7 @@ public class MemberQueryController {
     }
 
     @GetMapping("/{memberId}/hover-info")
-    public ResponseEntity<MemberInformationHoverResponse> findMemberById(@PathVariable Long memberId) {
+    public ResponseEntity<MemberInformationHoverResponse> findById(@PathVariable Long memberId) {
 
         Member findMember = memberQueryFacade.findById(
                 MemberId.from(memberId)
@@ -47,7 +47,7 @@ public class MemberQueryController {
     }
 
     @GetMapping
-    public ResponseEntity<MemberInformationHoverResponse> findMemberByNickName(@RequestParam(required = false) String nickName) {
+    public ResponseEntity<MemberInformationHoverResponse> findByNickName(@RequestParam(required = false) String nickName) {
 
         if (isBlank(nickName)) {
             return ResponseEntity.notFound().build();

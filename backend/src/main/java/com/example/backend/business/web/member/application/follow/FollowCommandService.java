@@ -24,6 +24,7 @@ public class FollowCommandService {
             updateUnfollow(source, target);
             return;
         }
+        followCommandRepository.follow(new Follow(source, target));
         updateFollow(source, target);
     }
 
@@ -33,7 +34,7 @@ public class FollowCommandService {
     }
 
     private void updateFollow(Member source, Member target) {
-        source.follow(new Follow(source, target));
+        source.increaseFollowingCount();
         target.increaseFollowerCount();
     }
 }

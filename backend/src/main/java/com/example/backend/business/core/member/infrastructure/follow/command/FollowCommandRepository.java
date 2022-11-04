@@ -1,5 +1,6 @@
 package com.example.backend.business.core.member.infrastructure.follow.command;
 
+import com.example.backend.business.core.member.entity.Follow;
 import com.example.backend.business.core.member.entity.values.MemberId;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.stereotype.Repository;
@@ -23,5 +24,9 @@ public class FollowCommandRepository {
         queryFactory.delete(follow)
                 .where(follow.source.memberId.eq(sourceId.getMemberId()).and(follow.target.memberId.eq(targetId.getMemberId())))
                 .execute();
+    }
+
+    public void follow(Follow follow) {
+        entityManager.persist(follow);
     }
 }
