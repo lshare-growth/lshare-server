@@ -38,6 +38,13 @@ public class BirthDate {
         return Objects.isNull(birthDate);
     }
 
+    public BirthDate updateBirthDate(BirthDate oldBirthDate, BirthDate newBirthDate) {
+        if (newBirthDate.isEmpty()) {
+            return oldBirthDate;
+        }
+        return newBirthDate;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

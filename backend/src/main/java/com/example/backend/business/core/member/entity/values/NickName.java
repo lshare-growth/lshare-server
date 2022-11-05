@@ -6,8 +6,6 @@ import java.util.Objects;
 @Embeddable
 public class NickName {
 
-    private static final int MAX_NAME_LENGTH = 39;
-
     private String nickName;
 
     /**
@@ -25,8 +23,14 @@ public class NickName {
         if (Objects.isNull(name) || name.isBlank()) {
             throw new IllegalArgumentException("회원 이름은 공백일 수 없습니다.");
         }
-        if (name.length() > MAX_NAME_LENGTH) {
+        if (name.length() > 39) {
             throw new IllegalArgumentException("입력 가능한 이름의 최대길이를 초과했습니다.");
+        }
+
+        String blankDeletedNickName = name.replaceAll(" ", "");
+
+        if (!blankDeletedNickName.equals(name)) {
+            throw new IllegalArgumentException("공백은 존재할 수 없습니다.");
         }
     }
 
@@ -38,7 +42,7 @@ public class NickName {
         return nickName;
     }
 
-    public void changeNickName(NickName nickName) {
+    public void updateNickName(NickName nickName) {
         if (this.equals(nickName)) {
             return;
         }

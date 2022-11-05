@@ -1,6 +1,6 @@
 package com.example.backend.business.core.member.entity.values;
 
-import com.example.backend.common.exception.ErrorField;
+import com.example.backend.business.core.common.ErrorField;
 
 import javax.persistence.Embeddable;
 import java.util.Objects;
@@ -53,6 +53,13 @@ public class BlogUrl {
 
     public boolean isEmpty() {
         return Objects.isNull(blogUrl) || blogUrl.isBlank() || blogUrl.trim().isEmpty();
+    }
+
+    public BlogUrl updateBlogUrl(BlogUrl oldBlogUrl, BlogUrl newBlogUrl) {
+        if (newBlogUrl.isEmpty()) {
+            return oldBlogUrl;
+        }
+        return newBlogUrl;
     }
 
     @Override

@@ -8,7 +8,6 @@ import com.example.backend.business.core.member.entity.values.BirthDate;
 import com.example.backend.business.core.member.entity.values.BlogUrl;
 import com.example.backend.business.core.member.entity.values.CurrentLoginIpAddress;
 import com.example.backend.business.core.member.entity.values.FollowerCount;
-import com.example.backend.business.core.member.entity.values.Followers;
 import com.example.backend.business.core.member.entity.values.FollowingCount;
 import com.example.backend.business.core.member.entity.values.Followings;
 import com.example.backend.business.core.member.entity.values.GithubId;
@@ -46,9 +45,6 @@ public class Member {
 
     @Embedded
     private Followings followings;
-
-    @Embedded
-    private Followers followers;
 
     @Embedded
     private ProfileImageUrl profileImageUrl;
@@ -143,7 +139,7 @@ public class Member {
     }
 
     public String getGithubLink() {
-        return Objects.isNull(githubLink) ? "" : githubLink.getGithubLink();
+        return githubLink.getGithubLink();
     }
 
     public NickName getNickNameAsValue() {
@@ -203,39 +199,11 @@ public class Member {
                               BirthDate birthDate,
                               Introduction introduction) {
 
-        this.blogUrl = updateBlogUrl(this.blogUrl, blogUrl);
-        this.district = updateDisctrict(this.district, district);
-        this.birthDate = updateBirthDate(this.birthDate, birthDate);
-        this.introduction = updateIntroduction(this.introduction, introduction);
+        this.blogUrl = blogUrl.updateBlogUrl(this.blogUrl, blogUrl);
+        this.district = district.updateDistrict(this.district, district);
+        this.birthDate = birthDate.updateBirthDate(this.birthDate, birthDate);
+        this.introduction = introduction.updateIntroduction(this.introduction, introduction);
         dateTime.update();
-    }
-
-    private BlogUrl updateBlogUrl(BlogUrl oldBlogUrl, BlogUrl newBlogUrl) {
-        if (newBlogUrl.isEmpty()) {
-            return oldBlogUrl;
-        }
-        return newBlogUrl;
-    }
-
-    private District updateDisctrict(District oldDistrict, District newDistrict) {
-        if (Objects.isNull(newDistrict)) {
-            return oldDistrict;
-        }
-        return newDistrict;
-    }
-
-    private BirthDate updateBirthDate(BirthDate oldBirthDate, BirthDate newBirthDate) {
-        if (newBirthDate.isEmpty()) {
-            return oldBirthDate;
-        }
-        return newBirthDate;
-    }
-
-    private Introduction updateIntroduction(Introduction oldIntroduction, Introduction newIntroduction) {
-        if (newIntroduction.isEmpty()) {
-            return oldIntroduction;
-        }
-        return newIntroduction;
     }
 
     public void updateNickName(NickName nickName) {
@@ -251,20 +219,16 @@ public class Member {
         this.followingCount = FollowingCount.from(followingCount.increaseAndGet());
     }
 
-    public void increaseFollowerCount() {
-        this.followerCount = FollowerCount.from(followerCount.increaseAndGet());
-    }
-
     public void decreaseFollowingCount() {
         this.followingCount = FollowingCount.from(followingCount.decreaseAndGet());
     }
 
-    public void decraseFollowerCount() {
-        this.followerCount = FollowerCount.from(followerCount.decraseAndGet());
+    public void increaseFollowerCount() {
+        this.followerCount = FollowerCount.from(followerCount.increaseAndGet());
     }
 
-    public void validateIpAddress(CurrentLoginIpAddress currentLoginIpAddress) {
-        lastLoginIpAddress.validateIpAddress(currentLoginIpAddress.getCurrentLoginIpAddress());
+    public void decraseFollowerCount() {
+        this.followerCount = FollowerCount.from(followerCount.decraseAndGet());
     }
 
     public void updateIpAddress(CurrentLoginIpAddress currentLoginIpAddress) {
@@ -274,10 +238,14 @@ public class Member {
 
     private void updateLastLoginIpAddress(CurrentLoginIpAddress currentLoginIpAddress) {
         if (Objects.isNull(this.currentLoginIpAddress)) {
-            this.lastLoginIpAddress = LastLoginIpAddress.from(currentLoginIpAddress.getCurrentLoginIpAddress());
+            this.lastLoginIpAddress = getUpdatedIpAddress(currentLoginIpAddress);
             return;
         }
-        this.lastLoginIpAddress = LastLoginIpAddress.from(this.currentLoginIpAddress.getCurrentLoginIpAddress());
+        this.lastLoginIpAddress = getUpdatedIpAddress(this.currentLoginIpAddress);
+    }
+
+    private LastLoginIpAddress getUpdatedIpAddress(CurrentLoginIpAddress currentLoginIpAddress) {
+        return lastLoginIpAddress.updateIpAddress(currentLoginIpAddress.getCurrentLoginIpAddress());
     }
 
     public void delete() {

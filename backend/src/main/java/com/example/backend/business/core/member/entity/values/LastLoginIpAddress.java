@@ -43,6 +43,10 @@ public class LastLoginIpAddress {
         return this.lastLoginIpAddress.equals(currentLoginIpAddress);
     }
 
+    public LastLoginIpAddress updateIpAddress(String currentLoginIpAddress) {
+        return new LastLoginIpAddress(currentLoginIpAddress);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

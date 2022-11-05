@@ -50,6 +50,13 @@ public class Introduction {
                 || !Objects.isNull(introduction) && introduction.trim().isEmpty();
     }
 
+    public Introduction updateIntroduction(Introduction oldIntroduction, Introduction newIntroduction) {
+        if (newIntroduction.isEmpty()) {
+            return oldIntroduction;
+        }
+        return newIntroduction;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

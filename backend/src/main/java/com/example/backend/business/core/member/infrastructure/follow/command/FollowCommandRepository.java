@@ -20,13 +20,16 @@ public class FollowCommandRepository {
         this.entityManager = entityManager;
     }
 
-    public void unfollow(MemberId sourceId, MemberId targetId) {
-        queryFactory.delete(follow)
-                .where(follow.source.memberId.eq(sourceId.getMemberId()).and(follow.target.memberId.eq(targetId.getMemberId())))
-                .execute();
-    }
-
     public void follow(Follow follow) {
         entityManager.persist(follow);
+    }
+
+    public void unfollow(MemberId sourceId, MemberId targetId) {
+        queryFactory.delete(follow)
+                .where(
+                        follow.source.memberId.eq(sourceId.getMemberId())
+                                .and(follow.target.memberId.eq(targetId.getMemberId()))
+                )
+                .execute();
     }
 }

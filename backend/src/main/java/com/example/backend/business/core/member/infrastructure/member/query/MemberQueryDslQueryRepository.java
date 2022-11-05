@@ -52,6 +52,17 @@ public class MemberQueryDslQueryRepository {
                 .fetchOne());
     }
 
+    public NickNameExistResponse validateDuplicatedNickName(NickName nickName) {
+        Integer result = queryFactory.selectOne()
+                .from(member)
+                .where(
+                        member.nickName.eq(nickName)
+                                .and(member.deleted.eq(FALSE))
+                )
+                .fetchFirst();
+        return NickNameExistResponse.of(result);
+    }
+
     public Boolean validatePageAuthorizationById(Long memberId, Long studyId) {
         if (memberId == null || studyId == null) {
             return Boolean.FALSE;
@@ -67,16 +78,5 @@ public class MemberQueryDslQueryRepository {
                 .fetchFirst();
 
         return result != null;
-    }
-
-    public NickNameExistResponse validateDuplicatedNickName(NickName nickName) {
-        Integer result = queryFactory.selectOne()
-                .from(member)
-                .where(
-                        member.nickName.eq(nickName)
-                                .and(member.deleted.eq(FALSE))
-                )
-                .fetchFirst();
-        return NickNameExistResponse.of(result);
     }
 }
