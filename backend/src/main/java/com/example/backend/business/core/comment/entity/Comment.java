@@ -26,6 +26,7 @@ import javax.persistence.ManyToOne;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+import static com.example.backend.business.core.common.Deleted.TRUE;
 import static com.example.backend.common.exception.member.MemberTypeException.UNAUTHORIZED_EXCEPTION;
 
 @Entity
@@ -125,11 +126,11 @@ public class Comment {
     }
 
     public String getNickName() {
-        return writer.getNickName();
+        return isDeleted() ? "" : writer.getNickName();
     }
 
     public String getWriter() {
-        return writer.getNickName();
+        return isDeleted() ? "" : writer.getNickName();
     }
 
     public String getContent() {
@@ -141,19 +142,15 @@ public class Comment {
     }
 
     public Long getCommentParentId() {
-        return commentParentId.getCommentParentId();
+        return isDeleted() ? 0L : commentParentId.getCommentParentId();
     }
 
     public String getWriterProfileImage() {
-        return writer.getProfileImageUrl();
+        return isDeleted() ? "" : writer.getProfileImageUrl();
     }
 
     public Deleted getDeleted() {
         return deleted;
-    }
-
-    public boolean hasParentId() {
-        return commentParentId.hasParentId();
     }
 
     public int getReCommentCount() {
@@ -168,26 +165,10 @@ public class Comment {
         return dateTime.getLastModifiedAt();
     }
 
-    public void delete(MemberId memberId) {
-        validateAuthorization(memberId);
-        this.deleted = Deleted.TRUE;
-        update();
-    }
-
-    private void validateAuthorization(MemberId memberId) {
-        if (!writer.getMemberIdAsValue().equals(memberId)) {
-            throw new BusinessException(UNAUTHORIZED_EXCEPTION);
-        }
-    }
-
     public void updateContent(MemberId memberId, CommentContent content) {
         validateMemberId(memberId);
         this.content = content;
         update();
-    }
-
-    private void update() {
-        this.dateTime.update();
     }
 
     private void validateMemberId(MemberId memberId) {
@@ -197,8 +178,28 @@ public class Comment {
         }
     }
 
+    public void delete(MemberId memberId) {
+        validateAuthorization(memberId);
+        this.deleted = TRUE;
+        update();
+    }
+
+    private void validateAuthorization(MemberId memberId) {
+        if (!writer.getMemberIdAsValue().equals(memberId)) {
+            throw new BusinessException(UNAUTHORIZED_EXCEPTION);
+        }
+    }
+
+    private void update() {
+        this.dateTime.update();
+    }
+
+    public boolean hasParentId() {
+        return commentParentId.hasParentId();
+    }
+
     public boolean isDeleted() {
-        return deleted.equals(Deleted.TRUE);
+        return deleted.equals(TRUE);
     }
 
     public boolean isNotDeleted() {
@@ -218,7 +219,7 @@ public class Comment {
     }
 
     public void delete() {
-        this.deleted = Deleted.TRUE;
+        this.deleted = TRUE;
     }
 
     @Override
