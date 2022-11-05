@@ -21,16 +21,8 @@ public class Likes {
         this(new LinkedHashSet<>());
     }
 
-    public static Likes initLikes() {
-        return new Likes();
-    }
-
     public Likes(Set<Like> likes) {
         this.likes = likes;
-    }
-
-    public boolean contains(Like like) {
-        return this.likes.contains(like);
     }
 
     @Override
