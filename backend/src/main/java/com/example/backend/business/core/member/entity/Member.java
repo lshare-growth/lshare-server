@@ -245,7 +245,7 @@ public class Member {
     }
 
     private LastLoginIpAddress getUpdatedIpAddress(CurrentLoginIpAddress currentLoginIpAddress) {
-        return lastLoginIpAddress.updateIpAddress(currentLoginIpAddress.getCurrentLoginIpAddress());
+        return LastLoginIpAddress.from(currentLoginIpAddress.getCurrentLoginIpAddress());
     }
 
     public void delete() {
