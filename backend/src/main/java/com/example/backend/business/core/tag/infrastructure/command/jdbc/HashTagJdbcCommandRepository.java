@@ -1,4 +1,4 @@
-package com.example.backend.business.core.tag.infrastructure.command;
+package com.example.backend.business.core.tag.infrastructure.command.jdbc;
 
 import com.example.backend.business.web.tag.presentation.dto.response.HashTagResponse;
 import com.example.backend.business.web.tag.presentation.dto.response.StudyHashTagResponse;

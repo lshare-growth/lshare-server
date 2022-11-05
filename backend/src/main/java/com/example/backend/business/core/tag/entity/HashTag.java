@@ -39,14 +39,6 @@ public class HashTag {
         return new HashTag(tagName);
     }
 
-    public void plusTagCount() {
-        this.tagCount.increaseTagCount();
-    }
-
-    public HashTagId getHashTagIdAsValue() {
-        return HashTagId.from(hashTagId);
-    }
-
     public Long getHashTagId() {
         return hashTagId;
     }
@@ -65,6 +57,14 @@ public class HashTag {
 
     public TagCount getTagCount() {
         return tagCount;
+    }
+
+    public void plusTagCount() {
+        this.tagCount.increaseTagCount();
+    }
+
+    public HashTagId getHashTagIdAsValue() {
+        return HashTagId.from(hashTagId);
     }
 
     /**
