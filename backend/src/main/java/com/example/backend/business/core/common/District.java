@@ -3,6 +3,7 @@ package com.example.backend.business.core.common;
 import com.example.backend.common.mapper.api.EnumMapperType;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 public enum District implements EnumMapperType {
 
@@ -32,6 +33,13 @@ public enum District implements EnumMapperType {
                 .filter(city -> city.type.equals(district))
                 .findAny()
                 .orElseGet(() -> NONE);
+    }
+
+    public District updateDistrict(District oldDistrict, District newDistrict) {
+        if (Objects.isNull(newDistrict)) {
+            return oldDistrict;
+        }
+        return newDistrict;
     }
 
     @Override

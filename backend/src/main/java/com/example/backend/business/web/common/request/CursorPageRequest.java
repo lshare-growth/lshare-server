@@ -30,7 +30,7 @@ public class CursorPageRequest {
     }
 
     public Cursor getCursor() {
-        return new Cursor(previous, pageSize);
+        return Cursor.from(previous, pageSize);
     }
 
     @Override

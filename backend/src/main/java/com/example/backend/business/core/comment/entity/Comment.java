@@ -122,7 +122,7 @@ public class Comment {
     }
 
     public Long getWriterId() {
-        return writer.getMemberId();
+        return isDeleted() ? 0L : writer.getMemberId();
     }
 
     public String getNickName() {
