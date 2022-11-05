@@ -4,7 +4,7 @@ import com.example.backend.business.core.study.entity.values.StudyId;
 import com.example.backend.business.core.study.entity.values.pojo.StudyIds;
 import com.example.backend.business.core.tag.entity.HashTag;
 import com.example.backend.business.core.tag.entity.values.TagName;
-import com.example.backend.business.core.tag.infrastructure.command.HashTagQueryDslCommandRepositorys;
+import com.example.backend.business.core.tag.infrastructure.command.jpa.HashTagQueryDslCommandRepositorys;
 import com.example.backend.business.web.tag.presentation.dto.response.HashTagResponse;
 import com.example.backend.business.web.tag.presentation.dto.response.StudyHashTagResponse;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +28,7 @@ public class HashTagQueryService {
 
     @Transactional(readOnly = true)
     public List<StudyHashTagResponse> findByIds(StudyIds studyIds) {
-        return hashTagQueryDslCommandRepositorys.findHashTagsByStudyId(studyIds);
+        return hashTagQueryDslCommandRepositorys.findByIds(studyIds);
     }
 
     @Transactional(readOnly = true)

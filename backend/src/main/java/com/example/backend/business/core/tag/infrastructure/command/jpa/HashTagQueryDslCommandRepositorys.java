@@ -28,7 +28,7 @@ public class HashTagQueryDslCommandRepositorys {
         this.queryFactory = queryFactory;
     }
 
-    public List<HashTagResponse> findByIds(StudyId studyId) {
+    public List<HashTagResponse> findById(StudyId studyId) {
         return queryFactory.select(
                         Projections.constructor(HashTagResponse.class,
                                 studyHashTag.hashTag.hashTagId,
