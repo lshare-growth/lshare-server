@@ -49,10 +49,6 @@ public class Like {
         this.clicked = LikeClicked.TRUE;
     }
 
-    public static Like update(Study study, MemberId memberId) {
-        return new Like(study, memberId);
-    }
-
     private UUID createUUID() {
         return Generators.timeBasedGenerator().generate();
     }

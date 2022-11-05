@@ -1,4 +1,4 @@
-package com.example.backend.business.core.tag.infrastructure.command;
+package com.example.backend.business.core.tag.infrastructure.command.jpa;
 
 import com.example.backend.business.core.study.entity.values.StudyId;
 import com.example.backend.business.core.study.entity.values.pojo.StudyIds;
@@ -28,7 +28,7 @@ public class HashTagQueryDslCommandRepositorys {
         this.queryFactory = queryFactory;
     }
 
-    public List<HashTagResponse> findById(StudyId studyId) {
+    public List<HashTagResponse> findByIds(StudyId studyId) {
         return queryFactory.select(
                         Projections.constructor(HashTagResponse.class,
                                 studyHashTag.hashTag.hashTagId,
@@ -55,15 +55,7 @@ public class HashTagQueryDslCommandRepositorys {
                 .fetch();
     }
 
-    public boolean exist(TagName tagName) {
-        Integer result = queryFactory.selectOne()
-                .from(hashTag)
-                .where(hashTag.tagName.eq(tagName))
-                .fetchFirst();
-        return result != null;
-    }
-
-    public List<StudyHashTagResponse> findHashTagsByStudyId(StudyIds studyIds) {
+    public List<StudyHashTagResponse> findByIds(StudyIds studyIds) {
         return queryFactory.select(
                         Projections.constructor(StudyHashTagResponse.class,
                                 hashTag.hashTagId,
@@ -88,5 +80,13 @@ public class HashTagQueryDslCommandRepositorys {
                 )
                 .from(topSearchedHashTag)
                 .fetch();
+    }
+
+    public boolean exist(TagName tagName) {
+        Integer result = queryFactory.selectOne()
+                .from(hashTag)
+                .where(hashTag.tagName.eq(tagName))
+                .fetchFirst();
+        return result != null;
     }
 }

@@ -1,6 +1,7 @@
 package com.example.backend.business.core.study.entity;
 
 import java.util.Arrays;
+import java.util.function.Predicate;
 
 public enum StudyStatus {
 
@@ -23,9 +24,13 @@ public enum StudyStatus {
 
     public static StudyStatus findStudyStatus(String status) {
         return Arrays.stream(values())
-                .filter(studyStatus -> studyStatus.type.equals(status))
+                .filter(isEqualTo(status))
                 .findAny()
                 .orElseThrow(() -> new IllegalArgumentException("스터디 상태를 찾을 수 없습니다."));
+    }
+
+    private static Predicate<StudyStatus> isEqualTo(String status) {
+        return studyStatus -> studyStatus.type.equals(status);
     }
 
     public String getType() {

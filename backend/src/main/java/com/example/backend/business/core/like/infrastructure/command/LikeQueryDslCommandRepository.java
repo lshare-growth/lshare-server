@@ -27,7 +27,10 @@ public class LikeQueryDslCommandRepository {
 
     public void deleteLike(MemberId memberId, StudyId studyId) {
         queryFactory.delete(like)
-                .where(like.study.studyId.eq(studyId.getStudyId()).and(like.memberId.eq(memberId)))
+                .where(
+                        like.study.studyId.eq(studyId.getStudyId())
+                                .and(like.memberId.eq(memberId))
+                )
                 .execute();
     }
 }

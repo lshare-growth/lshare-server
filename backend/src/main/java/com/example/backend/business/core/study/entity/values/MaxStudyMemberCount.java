@@ -6,9 +6,6 @@ import java.util.Objects;
 @Embeddable
 public class MaxStudyMemberCount {
 
-    private static final int MIN_STUDY_MEMBER_COUNT = 1;
-    private static final int MAX_STUDY_MEMBER_COUNT = 999;
-
     private int maxStudyMemberCount;
 
     /**
@@ -23,10 +20,10 @@ public class MaxStudyMemberCount {
     }
 
     private void validateMaxStudyMemberCount(int maxStudyMemberCount) {
-        if (maxStudyMemberCount < MIN_STUDY_MEMBER_COUNT) {
+        if (maxStudyMemberCount < 1) {
             throw new IllegalArgumentException("스터디 인원은 최소 한 명 이상이어야 합니다.");
         }
-        if (maxStudyMemberCount > MAX_STUDY_MEMBER_COUNT) {
+        if (maxStudyMemberCount > 999) {
             throw new IllegalArgumentException("스터디 최대 인원은 999명 이하로 입력해주세요.");
         }
     }

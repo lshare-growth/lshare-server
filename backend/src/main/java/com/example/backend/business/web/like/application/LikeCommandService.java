@@ -26,7 +26,7 @@ public class LikeCommandService {
             study.decreaseLikeCount();
             return;
         }
-        likeQueryDslCommandRepository.save(Like.update(study, memberId));
+        likeQueryDslCommandRepository.save(new Like(study, memberId));
         study.increaseLikeCount();
     }
 }

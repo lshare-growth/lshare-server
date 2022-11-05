@@ -32,7 +32,7 @@ public class StudyHashTag {
     protected StudyHashTag() {
     }
 
-    public StudyHashTag(Study study, HashTag hashTag) {
+    private StudyHashTag(Study study, HashTag hashTag) {
         this.study = study;
         this.hashTag = hashTag;
     }

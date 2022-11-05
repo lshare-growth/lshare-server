@@ -6,32 +6,29 @@ import java.util.Objects;
 @Embeddable
 public class LikeCount {
 
-    private static final int ONE = 0;
-    private static final int MAX_LIKE_COUNTS = 999;
-
     private int likeCount;
 
     /**
      * @Nullary-Constructor. JPA 기본 생성자로 study 외부 패키지에서 호출하지 말 것.
      */
     protected LikeCount() {
-        this.likeCount = ONE;
+        this.likeCount = 0;
     }
 
     private LikeCount(int likeCount) {
         this.likeCount = likeCount;
     }
 
-    public static LikeCount from(int likeCount) {
-        return new LikeCount(likeCount);
-    }
-
     public static LikeCount initLikeCount() {
         return new LikeCount();
     }
 
+    public static LikeCount from(int likeCount) {
+        return new LikeCount(likeCount);
+    }
+
     public int getLikeCount() {
-        return Math.min(likeCount, MAX_LIKE_COUNTS);
+        return Math.min(likeCount, 999);
     }
 
     public LikeCount increaseAndGet() {
@@ -39,7 +36,15 @@ public class LikeCount {
     }
 
     public LikeCount decreaseAndGet() {
-        return new LikeCount(likeCount - 1);
+        int decreasedLikeCount = likeCount - 1;
+        validateLikeCount(decreasedLikeCount);
+        return new LikeCount(decreasedLikeCount);
+    }
+
+    private static void validateLikeCount(int likeCount) {
+        if (likeCount < 0) {
+            throw new IllegalStateException("좋아요 수는 음수일 수 없습니다.");
+        }
     }
 
     @Override

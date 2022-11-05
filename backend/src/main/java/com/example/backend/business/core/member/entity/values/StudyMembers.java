@@ -1,7 +1,9 @@
 package com.example.backend.business.core.member.entity.values;
 
 import com.example.backend.business.core.member.entity.Member;
+import com.example.backend.business.core.study.entity.Study;
 import com.example.backend.business.core.study.entity.StudyMember;
+import com.example.backend.business.core.study.entity.StudyMemberRole;
 import com.example.backend.common.exception.BusinessException;
 import com.example.backend.common.exception.member.DuplicatedStudyMemberException;
 
@@ -51,9 +53,11 @@ public class StudyMembers {
         return studyMember.getRole().equals(LEADER);
     }
 
-    public void addStudyMember(StudyMember studyMember) {
-        validateStudyMembers(studyMember);
-        this.studyMembers.add(studyMember);
+    public void addStudyMember(Member member, Study study, StudyMemberRole role) {
+        StudyMember newStudyMember = new StudyMember(member, study, role);
+
+        validateStudyMembers(newStudyMember);
+        this.studyMembers.add(newStudyMember);
     }
 
     public void validateStudyMembers(StudyMember studyMember) {

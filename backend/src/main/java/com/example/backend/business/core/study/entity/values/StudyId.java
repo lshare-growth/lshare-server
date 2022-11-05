@@ -6,8 +6,6 @@ import java.util.Objects;
 @Embeddable
 public class StudyId {
 
-    private static final Long ZERO = 0L;
-
     private Long studyId;
 
     /**
@@ -22,7 +20,7 @@ public class StudyId {
     }
 
     private void validateStudyId(Long studyId) {
-        if (Objects.isNull(studyId) || studyId <= ZERO) {
+        if (Objects.isNull(studyId) || studyId <= 0L) {
             throw new IllegalArgumentException("올바른 스터디 아이디를 입력해주세요.");
         }
     }
