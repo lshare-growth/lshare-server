@@ -12,7 +12,8 @@ public class CursorTarget {
     }
 
     private void validateNext(Long next) {
-        if (!Objects.isNull(next) && next > Long.MIN_VALUE) {
+        if (!Objects.isNull(next) && next >= Long.MAX_VALUE ||
+                !Objects.isNull(next) && next < 0L) {
             throw new IllegalArgumentException("올바른 페이지 번호를 입력해주세요.");
         }
     }
