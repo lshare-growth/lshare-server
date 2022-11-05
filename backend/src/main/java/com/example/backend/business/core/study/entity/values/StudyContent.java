@@ -6,8 +6,6 @@ import java.util.Objects;
 @Embeddable
 public class StudyContent {
 
-    public static final int MAXIMUM_CONTENT_LENGTH = 2000;
-
     private String content;
 
     /**
@@ -26,7 +24,7 @@ public class StudyContent {
         if (Objects.isNull(content) || content.isBlank()) {
             throw new IllegalArgumentException("스터디 내용이 존재하지 않습니다.");
         }
-        if (content.length() > MAXIMUM_CONTENT_LENGTH) {
+        if (content.length() > 2000) {
             throw new IllegalArgumentException("입력 가능한 스터디 내용의 최대 길이를 초과했습니다.");
         }
     }
@@ -35,15 +33,15 @@ public class StudyContent {
         return new StudyContent(content);
     }
 
+    public String getContent() {
+        return content;
+    }
+
     public void updateContent(StudyContent content) {
         if (this.equals(content)) {
             return;
         }
         this.content = content.getContent();
-    }
-
-    public String getContent() {
-        return content;
     }
 
     @Override

@@ -6,15 +6,13 @@ import java.util.Objects;
 @Embeddable
 public class CommentCount {
 
-    private static final int ZERO = 0;
-
     private int commentCount;
 
     /**
      * @Nullary-Constructor. JPA 기본 생성자로 study 외부 패키지에서 호출하지 말 것.
      */
     protected CommentCount() {
-        this.commentCount = ZERO;
+        this.commentCount = 0;
     }
 
     private CommentCount(int commentCount) {
@@ -36,7 +34,7 @@ public class CommentCount {
     }
 
     private void validateCommentCount(int commentCount) {
-        if (commentCount < ZERO) {
+        if (commentCount < 0) {
             throw new IllegalStateException("댓글수는 음수일 수 없습니다.");
         }
     }

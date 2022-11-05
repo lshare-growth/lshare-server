@@ -6,8 +6,6 @@ import java.util.Objects;
 @Embeddable
 public class CurrentStudyMemberCount {
 
-    private static final int INIT_MEMBER_COUNT = 0;
-
     private int currentStudyMemberCount;
 
     /**
@@ -22,7 +20,7 @@ public class CurrentStudyMemberCount {
     }
 
     private void validateStudyMemberCount(int maxMemberCount) {
-        if (maxMemberCount < INIT_MEMBER_COUNT) {
+        if (maxMemberCount < 0) {
             throw new IllegalArgumentException("스터디원은 최소 1명보다 많거나 같아야 합니다.");
         }
     }
@@ -37,10 +35,6 @@ public class CurrentStudyMemberCount {
 
     public CurrentStudyMemberCount increaseAndGetMemberCount() {
         return new CurrentStudyMemberCount(currentStudyMemberCount + 1);
-    }
-
-    public void decreaseMemberCount() {
-        currentStudyMemberCount--;
     }
 
     public CurrentStudyMemberCount update(int value) {

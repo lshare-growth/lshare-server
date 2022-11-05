@@ -6,8 +6,6 @@ import java.util.Objects;
 @Embeddable
 public class StudyTitle {
 
-    private static final int MAX_POST_TITLE_LENGTH = 50;
-
     private String title;
 
     /**
@@ -25,20 +23,13 @@ public class StudyTitle {
         if (Objects.isNull(title) || title.isBlank()) {
             throw new IllegalArgumentException("스터디 제목을 입력해주세요.");
         }
-        if (title.length() > MAX_POST_TITLE_LENGTH) {
+        if (title.length() > 50) {
             throw new IllegalArgumentException("입력 가능한 스터디 제목의 최대길이를 초과했습니다.");
         }
     }
 
-    public static StudyTitle from(final String title) {
+    public static StudyTitle from(String title) {
         return new StudyTitle(title);
-    }
-
-    public void updateTitle(final StudyTitle title) {
-        if (this.equals(title)) {
-            return;
-        }
-        this.title = title.getTitle();
     }
 
     public String getTitle() {

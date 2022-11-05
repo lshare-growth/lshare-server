@@ -69,10 +69,6 @@ public class StudyMember {
         this.studyMemberRole = studyMemberRole;
     }
 
-    public boolean isStudyLeader() {
-        return this.studyMemberRole.equals(StudyMemberRole.LEADER);
-    }
-
     public Member getMember() {
         return member;
     }
@@ -95,6 +91,10 @@ public class StudyMember {
 
     public String getStudyLeaderNickName() {
         return member.getNickName();
+    }
+
+    public boolean isStudyLeader() {
+        return this.studyMemberRole.equals(StudyMemberRole.LEADER);
     }
 
     @Override

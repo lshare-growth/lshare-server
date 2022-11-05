@@ -3,6 +3,7 @@ package com.example.backend.business.core.study.entity;
 import com.example.backend.common.mapper.api.EnumMapperType;
 
 import java.util.Arrays;
+import java.util.function.Predicate;
 
 public enum ProgressOfStudy implements EnumMapperType {
 
@@ -14,7 +15,10 @@ public enum ProgressOfStudy implements EnumMapperType {
     private final String type;
     private final String value;
 
-    ProgressOfStudy(int progressOfStudyId, String type, String value) {
+    ProgressOfStudy(int progressOfStudyId,
+                    String type,
+                    String value) {
+
         this.progressOfStudyId = progressOfStudyId;
         this.type = type;
         this.value = value;
@@ -22,13 +26,13 @@ public enum ProgressOfStudy implements EnumMapperType {
 
     public static ProgressOfStudy findProcessByType(String type) {
         return Arrays.stream(values())
-                .filter(processOfStudy -> isEqualTo(type, processOfStudy))
+                .filter(isEqualTo(type))
                 .findAny()
                 .orElseThrow(() -> new IllegalArgumentException("해당하는 스터디 진행방식을 찾을 수 없습니다."));
     }
 
-    private static boolean isEqualTo(String type, ProgressOfStudy processOfStudy) {
-        return processOfStudy.type.equals(type);
+    private static Predicate<ProgressOfStudy> isEqualTo(String type) {
+        return progressOfStudy -> progressOfStudy.type.equals(type);
     }
 
     public ProgressOfStudy updateProgressOfStudy(ProgressOfStudy progressOfStudy) {

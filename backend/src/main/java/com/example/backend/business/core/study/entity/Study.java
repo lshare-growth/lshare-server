@@ -2,12 +2,10 @@ package com.example.backend.business.core.study.entity;
 
 import com.example.backend.business.core.comment.entity.Comment;
 import com.example.backend.business.core.comment.entity.values.Comments;
-import com.example.backend.business.core.comment.entity.values.pojo.CommentId;
 import com.example.backend.business.core.common.Deleted;
 import com.example.backend.business.core.common.District;
 import com.example.backend.business.core.common.values.DateTime;
 import com.example.backend.business.core.common.values.ViewCount;
-import com.example.backend.business.core.image.entity.vo.Images;
 import com.example.backend.business.core.member.entity.Member;
 import com.example.backend.business.core.member.entity.values.StudyMembers;
 import com.example.backend.business.core.study.entity.values.CommentCount;
@@ -49,9 +47,6 @@ public class Study {
 
     @Embedded
     private Comments comments;
-
-    @Embedded
-    private Images images;
 
     @Column(columnDefinition = "ENUM('RECRUITING', 'RECRUITMENT_COMPLETE', 'FINISHED')")
     @Enumerated(EnumType.STRING)
@@ -273,6 +268,15 @@ public class Study {
         updateDate();
     }
 
+    public void updateStudyStatus(Member member, StudyStatus studyStatus) {
+        validateStudyLeader(member);
+        this.studyStatus = studyStatus;
+    }
+
+    public void validateStudyLeader(Member studyLeader) {
+        studyMembers.validateStudyLeader(studyLeader);
+    }
+
     private void updateDate() {
         this.dateTime.update();
     }
@@ -285,7 +289,7 @@ public class Study {
     }
 
     public void registerMember(Member studyLeader) {
-        this.studyMembers.addStudyMember(new StudyMember(studyLeader, this, StudyMemberRole.LEADER));
+        this.studyMembers.addStudyMember(studyLeader, this, StudyMemberRole.LEADER);
         this.currentStudyMemberCount = currentStudyMemberCount.increaseAndGetMemberCount();
     }
 
@@ -294,21 +298,12 @@ public class Study {
         this.commentCount = this.commentCount.increaseAndGet();
     }
 
-    public Comment findCommentByCommentId(CommentId commentId) {
-        return this.comments.findCommentById(commentId);
-    }
-
     public void increaseViewCount() {
         this.viewCount = viewCount.increaseAndGet();
     }
 
-    public Member findStudyLeader() {
-        return studyMembers.findStudyLeader();
-    }
-
-    public void validateStudy(Member member) {
-        this.milestone.validateStudyDate();
-        this.studyMembers.validateDuplicatedMember(member);
+    public void increaseCommentCount() {
+        this.commentCount = commentCount.increaseAndGet();
     }
 
     public void increaseLikeCount() {
@@ -319,25 +314,12 @@ public class Study {
         this.likeCount = likeCount.decreaseAndGet();
     }
 
-    public void updateStudyMemberCount(int value) {
-        this.currentStudyMemberCount = currentStudyMemberCount.update(value);
-    }
-
-    public void validateStudyLeader(Member studyLeader) {
-        studyMembers.validateStudyLeader(studyLeader);
-    }
-
     public void decreaseCommentCount() {
         this.commentCount = commentCount.decreaseAndGetCommentCount();
     }
 
-    public void updateStudyStatus(Member member, StudyStatus studyStatus) {
-        validateStudyLeader(member);
-        this.studyStatus = studyStatus;
-    }
-
-    public void increaseCommentCount() {
-        this.commentCount = commentCount.increaseAndGet();
+    public Member findStudyLeader() {
+        return studyMembers.findStudyLeader();
     }
 
     @Override

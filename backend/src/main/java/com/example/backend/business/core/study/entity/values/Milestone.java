@@ -1,7 +1,5 @@
 package com.example.backend.business.core.study.entity.values;
 
-import com.example.backend.common.exception.study.StudyTerminatedException;
-
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
 import java.time.LocalDate;
@@ -59,12 +57,6 @@ public class Milestone {
 
     public boolean isAfterStudyEndDate() {
         return endDate.isAfterStudyEndDate();
-    }
-
-    public void validateStudyDate() {
-        if (isAfterStudyEndDate()) {
-            throw new StudyTerminatedException(null);
-        }
     }
 
     @Override
