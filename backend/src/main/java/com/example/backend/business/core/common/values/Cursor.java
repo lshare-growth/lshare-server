@@ -7,7 +7,7 @@ public class Cursor {
     private final CursorTarget cursorTarget;
     private final PageSize pageSize;
 
-    public Cursor(Long cursor, Integer pageSize) {
+    private Cursor(Long cursor, Integer pageSize) {
         this.cursorTarget = CursorTarget.from(cursor);
         this.pageSize = PageSize.from(pageSize);
     }
@@ -34,6 +34,22 @@ public class Cursor {
 
     public boolean isFirstPage() {
         return Objects.isNull(cursorTarget.getNext()) || cursorTarget.getNext() == 0L;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Cursor)) return false;
+        Cursor cursor = (Cursor) o;
+        return Objects.equals(
+                cursorTarget, cursor.cursorTarget)
+                && Objects.equals(getPageSize(), cursor.getPageSize()
+        );
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(cursorTarget, getPageSize());
     }
 
     @Override

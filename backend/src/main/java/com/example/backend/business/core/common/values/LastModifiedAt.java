@@ -16,6 +16,10 @@ public class LastModifiedAt {
         this.lastModifiedAt = null;
     }
 
+    private LastModifiedAt(LocalDateTime lastModifiedAt) {
+        this.lastModifiedAt = lastModifiedAt;
+    }
+
     public static LastModifiedAt initLastModifiedAt() {
         return new LastModifiedAt();
     }
@@ -25,7 +29,7 @@ public class LastModifiedAt {
     }
 
     public static LastModifiedAt update() {
-        return new LastModifiedAt();
+        return new LastModifiedAt(LocalDateTime.now());
     }
 
     @Override

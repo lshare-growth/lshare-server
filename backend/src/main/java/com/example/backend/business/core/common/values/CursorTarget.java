@@ -4,8 +4,6 @@ import java.util.Objects;
 
 public class CursorTarget {
 
-    private static final Long MAX_PAGE_NUMBER = Long.MAX_VALUE;
-
     private final Long next;
 
     public CursorTarget(Long next) {
@@ -14,7 +12,7 @@ public class CursorTarget {
     }
 
     private void validateNext(Long next) {
-        if (!Objects.isNull(next) && next > MAX_PAGE_NUMBER) {
+        if (!Objects.isNull(next)) {
             throw new IllegalArgumentException("올바른 페이지 번호를 입력해주세요.");
         }
     }

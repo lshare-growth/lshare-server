@@ -1,4 +1,6 @@
-package com.example.backend.common.exception;
+package com.example.backend.business.core.common;
+
+import java.util.Objects;
 
 public class ErrorField extends RuntimeException {
 
@@ -29,6 +31,19 @@ public class ErrorField extends RuntimeException {
 
     public Object getValue() {
         return value;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ErrorField)) return false;
+        ErrorField that = (ErrorField) o;
+        return getFieldName().equals(that.getFieldName()) && getValue().equals(that.getValue());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getFieldName(), getValue());
     }
 
     @Override
