@@ -17,14 +17,7 @@ public class StartDate {
     }
 
     private StartDate(LocalDate startDate) {
-        validateStartDate(startDate);
         this.startDate = startDate;
-    }
-
-    private void validateStartDate(LocalDate startDate) {
-        if (startDate.isBefore(LocalDate.now())) {
-            throw new IllegalArgumentException("올바른 스터디 시작일과 마감일을 입력해주세요.");
-        }
     }
 
     public static StartDate from(LocalDate startDate) {
