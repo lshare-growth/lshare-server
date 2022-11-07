@@ -1,5 +1,7 @@
 package com.example.backend.business.core.study.entity.values;
 
+import com.example.backend.business.core.common.ErrorField;
+
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
 import java.time.LocalDate;
@@ -27,11 +29,14 @@ public class Milestone {
     }
 
     private void validateMilestone(LocalDate startDate, LocalDate endDate) {
-        if (Objects.isNull(startDate) || Objects.isNull(endDate)) {
-            throw new IllegalArgumentException("시작일 또는 마감일이 존재하지 않습니다.");
+        if (Objects.isNull(startDate)) {
+            throw new IllegalArgumentException("시작일 또는 마감일이 존재하지 않습니다.", ErrorField.of("스터디 시작일", startDate));
+        }
+        if (Objects.isNull(endDate)) {
+            throw new IllegalArgumentException("시작일 또는 마감일이 존재하지 않습니다.", ErrorField.of("스터디 종료일", endDate));
         }
         if (startDate.isAfter(endDate)) {
-            throw new IllegalArgumentException("올바른 스터디 시작일과 마감일을 입력해주세요.");
+            throw new IllegalArgumentException("올바른 스터디 시작일과 마감일을 입력해주세요.", ErrorField.of("스터디 종료일", endDate));
         }
     }
 
