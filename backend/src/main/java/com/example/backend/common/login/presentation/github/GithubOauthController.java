@@ -1,6 +1,7 @@
 package com.example.backend.common.login.presentation.github;
 
 import com.example.backend.business.core.member.entity.values.CurrentLoginIpAddress;
+import com.example.backend.common.configuration.business.AESUtil;
 import com.example.backend.common.login.facade.GithubOauthFacade;
 import com.example.backend.common.login.model.ClientRegistration;
 import com.example.backend.common.login.model.InMemoryClientRegisterRepository;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 
 import static com.example.backend.common.login.model.token.github.GithubToken.GITHUB;
+import static javax.security.auth.callback.ConfirmationCallback.OK;
 
 @Slf4j
 @RestController
@@ -32,6 +34,7 @@ public final class GithubOauthController extends OauthController {
     private final InMemoryClientRegisterRepository inMemoryClientRegisterRepository;
     private final WebTokenProvider webTokenProvider;
     private final GithubOauthFacade githubOauthFacade;
+    private final AESUtil aesUtil;
 
     @GetMapping("/login")
     public ResponseEntity<String> loginHome() {
@@ -53,7 +56,7 @@ public final class GithubOauthController extends OauthController {
         OauthClient oauthClient = webTokenProvider.createOauthClient(webToken.getAccessToken(), clientRegistration);
         LoginResponse loginResponse = githubOauthFacade.save(oauthClient, ipAddress);
 
-        return ResponseEntity.status(HttpStatus.OK)
+        return ResponseEntity.status(OK)
                 .headers(setHeader(loginResponse.getMember(), loginResponse.getJwtToken(), loginResponse.getNotificationRead()))
                 .body(AccessTokenResponse.of(loginResponse.getAccessToken()));
     }
@@ -61,7 +64,7 @@ public final class GithubOauthController extends OauthController {
     private CurrentLoginIpAddress extractIpAddress(HttpServletRequest httpServletRequest) {
         String ipAddress = (String) httpServletRequest.getAttribute("ipAddress");
         return CurrentLoginIpAddress.from(
-                ipAddress
+                aesUtil.encrypt(ipAddress)
         );
     }
 }
