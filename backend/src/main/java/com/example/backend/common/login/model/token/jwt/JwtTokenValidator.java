@@ -16,7 +16,6 @@ import org.springframework.stereotype.Component;
 import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
-import java.util.Date;
 import java.util.Objects;
 
 @Component
@@ -25,8 +24,6 @@ public class JwtTokenValidator implements TokenValidator {
     private static final Logger log = LoggerFactory.getLogger(JwtTokenValidator.class);
 
     private static final String MEMBER_ID = "memberId";
-    private static final long FIVE_MINUTE = 5;
-    private static final long MINUTE = 60000;
 
     @Value("${jwt.secret-key}")
     private String secretKey;
@@ -101,15 +98,11 @@ public class JwtTokenValidator implements TokenValidator {
         return Long.valueOf(String.valueOf(claims.get(MEMBER_ID)));
     }
 
-    public boolean isClosedToExpiration(Claims claims) {
-        final Date expiration = claims.getExpiration();
-        final Date now = new Date();
-
-        final long remainingTime = (expiration.getTime() - now.getTime()) / MINUTE;
-        return remainingTime <= FIVE_MINUTE;
-    }
-
     public boolean validateRefreshToken(String refreshToken, String savedRefreshToken) {
+        if (Objects.isNull(refreshToken) || Objects.isNull(savedRefreshToken)) {
+            return false;
+        }
+
         if (!refreshToken.equals(savedRefreshToken)) {
             return false;
         }
@@ -126,6 +119,7 @@ public class JwtTokenValidator implements TokenValidator {
 
     public String getPayLoad(String token) {
         Claims claims = getClaims(token);
+
         if (claims != null) {
             return String.valueOf(getClaims(token).get("nickName"));
         }

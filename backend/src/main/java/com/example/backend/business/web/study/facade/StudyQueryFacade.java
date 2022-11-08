@@ -47,6 +47,14 @@ public class StudyQueryFacade {
         return studyQueryServices.findById(studyId);
     }
 
+    @Transactional(readOnly = true)
+    public StudyResponse findById(Long memberId, StudyId studyId) {
+        Study findStudy = studyQueryServices.findById(studyId).orElseThrow(() -> new BusinessException(STUDY_NOT_FOUND_EXCEPTION));
+        StudyMember studyLeader = studyQueryServices.findStudyLeaderById(studyId).orElseThrow(() -> new BusinessException(MEMBER_NOT_FOUND_EXCEPTION));
+
+        return StudyResponse.of(memberId, studyLeader, findStudy);
+    }
+
     @Transactional
     public StudyResponse findByIdAndIncreaseViewCount(Long memberId, StudyId studyId) {
         Study findStudy = studyQueryServices.findById(studyId).orElseThrow(() -> new BusinessException(STUDY_NOT_FOUND_EXCEPTION));
