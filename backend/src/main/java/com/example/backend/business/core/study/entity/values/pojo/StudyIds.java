@@ -2,6 +2,7 @@ package com.example.backend.business.core.study.entity.values.pojo;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class StudyIds {
 
@@ -17,6 +18,28 @@ public class StudyIds {
 
     public List<Long> getStudyIds() {
         return studyIds;
+    }
+
+    public boolean contains(Long studyId) {
+        if (Objects.isNull(studyId)) {
+            return false;
+        }
+        return this.studyIds.contains(studyId);
+    }
+
+    public String toCookieValue() {
+        return this.studyIds.stream()
+                .map(String::valueOf)
+                .collect(Collectors.joining("-"));
+    }
+
+    public void add(Long studyId) {
+        if (studyIds.size() > 20) {
+            studyIds.remove(0);
+            studyIds.add(studyId);
+            return;
+        }
+        studyIds.add(studyId);
     }
 
     @Override

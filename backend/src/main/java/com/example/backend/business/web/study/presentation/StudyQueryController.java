@@ -2,12 +2,14 @@ package com.example.backend.business.web.study.presentation;
 
 import com.example.backend.business.core.study.entity.values.StudyId;
 import com.example.backend.business.core.study.entity.values.StudyTitle;
+import com.example.backend.business.core.study.entity.values.pojo.StudyIds;
 import com.example.backend.business.core.tag.entity.values.TagName;
 import com.example.backend.business.web.study.facade.StudyQueryFacade;
 import com.example.backend.business.web.study.presentation.dto.response.StudyLandingPageResponse;
 import com.example.backend.business.web.study.presentation.dto.response.StudyPageResponse;
 import com.example.backend.business.web.study.presentation.dto.response.StudyResponse;
 import com.example.backend.business.web.study.presentation.dto.response.StudySearchPageResponse;
+import com.example.backend.common.configuration.business.AESUtil;
 import com.example.backend.common.mapper.database.SortOrder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -21,7 +23,11 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Objects;
 
+import static com.example.backend.common.api.ApiUtils.extractCookie;
+import static com.example.backend.common.api.ApiUtils.extractStudyViewHistory;
 import static com.example.backend.common.api.ApiUtils.getMemberId;
+import static com.example.backend.common.api.ApiUtils.setHeader;
+import static javax.security.auth.callback.ConfirmationCallback.OK;
 
 @RestController
 @RequiredArgsConstructor
@@ -29,17 +35,39 @@ import static com.example.backend.common.api.ApiUtils.getMemberId;
 public class StudyQueryController {
 
     private final StudyQueryFacade studyQueryFacade;
+    private final AESUtil aesUtil;
 
     @GetMapping("/{studyId}")
-    public ResponseEntity<StudyResponse> findByIdAndIncreaseViewCount(@PathVariable Long studyId,
-                                                  HttpServletRequest httpServletRequest) {
+    public ResponseEntity<StudyResponse> findByIdV1(@PathVariable Long studyId,
+                                                    HttpServletRequest httpServletRequest) {
 
-        StudyResponse response = studyQueryFacade.findByIdAndIncreaseViewCount(
+        String studyIdCookie = extractCookie(httpServletRequest);
+        StudyIds studyViewHistory = extractStudyViewHistory(aesUtil.decrypt(studyIdCookie));
+
+        if (studyViewHistory.contains(studyId)) {
+            return ResponseEntity.ok(findById(studyId, httpServletRequest));
+        }
+
+        StudyResponse response = findByIdAndIncreaseViewCount(studyId, httpServletRequest);
+        studyViewHistory.add(studyId);
+
+        return ResponseEntity.status(OK)
+                .headers(setHeader(aesUtil.encrypt(studyViewHistory.toCookieValue())))
+                .body(response);
+    }
+
+    private StudyResponse findById(Long studyId, HttpServletRequest httpServletRequest) {
+        return studyQueryFacade.findById(
                 getMemberId(httpServletRequest),
                 StudyId.from(studyId)
         );
+    }
 
-        return ResponseEntity.ok(response);
+    private StudyResponse findByIdAndIncreaseViewCount(Long studyId, HttpServletRequest httpServletRequest) {
+        return studyQueryFacade.findByIdAndIncreaseViewCount(
+                getMemberId(httpServletRequest),
+                StudyId.from(studyId)
+        );
     }
 
     @GetMapping("/landing")
