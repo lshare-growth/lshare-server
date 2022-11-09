@@ -1,5 +1,6 @@
 package com.example.backend.business.core.study.entity;
 
+import com.example.backend.business.core.common.ErrorField;
 import com.example.backend.common.mapper.api.EnumMapperType;
 
 import java.util.Arrays;
@@ -28,7 +29,7 @@ public enum ProgressOfStudy implements EnumMapperType {
         return Arrays.stream(values())
                 .filter(isEqualTo(type))
                 .findAny()
-                .orElseThrow(() -> new IllegalArgumentException("해당하는 스터디 진행방식을 찾을 수 없습니다."));
+                .orElseThrow(() -> new IllegalArgumentException("해당하는 스터디 진행방식을 찾을 수 없습니다.", ErrorField.of("progressOfStudy", type)));
     }
 
     private static Predicate<ProgressOfStudy> isEqualTo(String type) {
@@ -39,7 +40,7 @@ public enum ProgressOfStudy implements EnumMapperType {
         if (contains(progressOfStudy)) {
             return progressOfStudy;
         }
-        throw new IllegalArgumentException("해당하는 스터디 진행방식을 찾을 수 없습니다.");
+        throw new IllegalArgumentException("해당하는 스터디 진행방식을 찾을 수 없습니다.", ErrorField.of("progressOfStudy", progressOfStudy));
     }
 
     private boolean contains(ProgressOfStudy progressOfStudy) {

@@ -1,5 +1,7 @@
 package com.example.backend.business.core.study.entity.values;
 
+import com.example.backend.business.core.common.ErrorField;
+
 import javax.persistence.Embeddable;
 import java.util.Objects;
 
@@ -22,10 +24,10 @@ public class StudyContent {
 
     private void validateContent(String content) {
         if (Objects.isNull(content) || content.isBlank()) {
-            throw new IllegalArgumentException("스터디 내용이 존재하지 않습니다.");
+            throw new IllegalArgumentException("스터디 내용이 존재하지 않습니다.", ErrorField.of("content", content));
         }
         if (content.length() > 2000) {
-            throw new IllegalArgumentException("입력 가능한 스터디 내용의 최대 길이를 초과했습니다.");
+            throw new IllegalArgumentException("입력 가능한 스터디 내용의 최대 길이를 초과했습니다.", ErrorField.of("content-length", content.length()));
         }
     }
 

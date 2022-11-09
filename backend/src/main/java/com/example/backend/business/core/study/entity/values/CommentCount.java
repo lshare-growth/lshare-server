@@ -1,5 +1,7 @@
 package com.example.backend.business.core.study.entity.values;
 
+import com.example.backend.business.core.common.ErrorField;
+
 import javax.persistence.Embeddable;
 import java.util.Objects;
 
@@ -35,7 +37,7 @@ public class CommentCount {
 
     private void validateCommentCount(int commentCount) {
         if (commentCount < 0) {
-            throw new IllegalStateException("댓글수는 음수일 수 없습니다.");
+            throw new IllegalStateException("댓글수는 음수일 수 없습니다.", ErrorField.of("commentCount", commentCount));
         }
     }
 

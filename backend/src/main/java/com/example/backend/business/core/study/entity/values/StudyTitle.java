@@ -1,5 +1,7 @@
 package com.example.backend.business.core.study.entity.values;
 
+import com.example.backend.business.core.common.ErrorField;
+
 import javax.persistence.Embeddable;
 import java.util.Objects;
 
@@ -21,10 +23,10 @@ public class StudyTitle {
 
     private void validatePostTitle(String title) {
         if (Objects.isNull(title) || title.isBlank()) {
-            throw new IllegalArgumentException("스터디 제목을 입력해주세요.");
+            throw new IllegalArgumentException("스터디 제목을 입력해주세요.", ErrorField.of("title", title));
         }
         if (title.length() > 50) {
-            throw new IllegalArgumentException("입력 가능한 스터디 제목의 최대길이를 초과했습니다.");
+            throw new IllegalArgumentException("입력 가능한 스터디 제목의 최대길이를 초과했습니다.", ErrorField.of("title-length", title.length()));
         }
     }
 
