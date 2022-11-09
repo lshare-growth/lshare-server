@@ -1,5 +1,7 @@
 package com.example.backend.business.core.notice.entity.values;
 
+import com.example.backend.business.core.common.ErrorField;
+
 import javax.persistence.Embeddable;
 import javax.persistence.Lob;
 import java.util.Objects;
@@ -29,10 +31,10 @@ public class NoticeContent {
 
     private void validateContent(String content) {
         if (Objects.isNull(content) || content.isBlank()) {
-            throw new IllegalArgumentException("공지사항 내용을 입력해주세요.");
+            throw new IllegalArgumentException("공지사항 내용을 입력해주세요.", ErrorField.of("content", content));
         }
         if (content.length() > MAXIMUM_CONTENT_LENGTH) {
-            throw new IllegalArgumentException("입력 가능한 공지사항 내용의 최대 길이를 초과했습니다.");
+            throw new IllegalArgumentException("입력 가능한 공지사항 내용의 최대 길이를 초과했습니다.", ErrorField.of("content", content));
         }
     }
 
