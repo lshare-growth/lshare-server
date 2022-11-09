@@ -1,5 +1,7 @@
 package com.example.backend.business.core.comment.entity.values.pojo;
 
+import com.example.backend.business.core.common.ErrorField;
+
 import java.util.Objects;
 import java.util.Set;
 
@@ -14,7 +16,7 @@ public class CommentIds {
 
     private void validateCommentIds(Set<Long> commentIds) {
         if (Objects.isNull(commentIds) || commentIds.isEmpty()) {
-            throw new IllegalArgumentException("댓글 아이디들이 존재하지 않습니다.");
+            throw new IllegalArgumentException("댓글 아이디들이 존재하지 않습니다.", ErrorField.of("commentIds", commentIds));
         }
     }
 
