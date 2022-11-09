@@ -1,5 +1,7 @@
 package com.example.backend.business.core.common.values;
 
+import com.example.backend.business.core.common.ErrorField;
+
 import java.util.Objects;
 
 public class CursorTarget {
@@ -14,7 +16,7 @@ public class CursorTarget {
     private void validateNext(Long next) {
         if (!Objects.isNull(next) && next >= Long.MAX_VALUE ||
                 !Objects.isNull(next) && next < 0L) {
-            throw new IllegalArgumentException("올바른 페이지 번호를 입력해주세요.");
+            throw new IllegalArgumentException("올바른 페이지 번호를 입력해주세요.", ErrorField.of("next", next));
         }
     }
 

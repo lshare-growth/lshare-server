@@ -9,19 +9,15 @@ public class PageSize {
     private final int pageSize;
 
     public PageSize(Integer pageSize) {
-        validatePageSize(pageSize);
         this.pageSize = getPageSize(pageSize);
-    }
-
-    private void validatePageSize(Integer pageSize) {
-        if (pageSize < 0) {
-            throw new IllegalArgumentException("올바른 페이지 크기를 입력해주세요.");
-        }
     }
 
     private int getPageSize(Integer pageSize) {
         if (Objects.isNull(pageSize) || pageSize > MAX_PAGE_SIZE) {
-            return MAX_PAGE_SIZE;
+            return 0;
+        }
+        if (pageSize < 0) {
+            return 0;
         }
         return pageSize;
     }
