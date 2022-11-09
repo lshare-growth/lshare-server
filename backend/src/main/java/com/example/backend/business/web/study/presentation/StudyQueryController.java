@@ -27,7 +27,6 @@ import static com.example.backend.common.api.ApiUtils.extractCookie;
 import static com.example.backend.common.api.ApiUtils.extractStudyViewHistory;
 import static com.example.backend.common.api.ApiUtils.getMemberId;
 import static com.example.backend.common.api.ApiUtils.setHeader;
-import static javax.security.auth.callback.ConfirmationCallback.OK;
 
 @RestController
 @RequiredArgsConstructor
@@ -51,7 +50,7 @@ public class StudyQueryController {
         StudyResponse response = findByIdAndIncreaseViewCount(studyId, httpServletRequest);
         studyViewHistory.add(studyId);
 
-        return ResponseEntity.status(OK)
+        return ResponseEntity.ok()
                 .headers(setHeader(aesUtil.encrypt(studyViewHistory.toCookieValue())))
                 .body(response);
     }

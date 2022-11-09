@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 
 import static com.example.backend.common.login.model.token.github.GithubToken.GITHUB;
-import static javax.security.auth.callback.ConfirmationCallback.OK;
 
 @Slf4j
 @RestController
@@ -56,7 +55,7 @@ public final class GithubOauthController extends OauthController {
         OauthClient oauthClient = webTokenProvider.createOauthClient(webToken.getAccessToken(), clientRegistration);
         LoginResponse loginResponse = githubOauthFacade.save(oauthClient, ipAddress);
 
-        return ResponseEntity.status(OK)
+        return ResponseEntity.status(HttpStatus.OK)
                 .headers(setHeader(loginResponse.getMember(), loginResponse.getJwtToken(), loginResponse.getNotificationRead()))
                 .body(AccessTokenResponse.of(loginResponse.getAccessToken()));
     }

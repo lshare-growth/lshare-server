@@ -21,9 +21,6 @@ public class StudyIds {
     }
 
     public boolean contains(Long studyId) {
-        if (Objects.isNull(studyId)) {
-            return false;
-        }
         return this.studyIds.contains(studyId);
     }
 

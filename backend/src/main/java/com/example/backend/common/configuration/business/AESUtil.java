@@ -67,9 +67,4 @@ public class AESUtil {
     private byte[] decodeBase64(String encodedString) {
         return java.util.Base64.getDecoder().decode(encodedString);
     }
-
-    @Override
-    public String toString() {
-        return "AESUtil";
-    }
 }
