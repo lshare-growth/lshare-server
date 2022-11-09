@@ -1,5 +1,6 @@
 package com.example.backend.business.core.tag.entity.values;
 
+import com.example.backend.business.core.common.ErrorField;
 import com.example.backend.business.core.study.entity.StudyHashTag;
 
 import javax.persistence.CascadeType;
@@ -29,10 +30,10 @@ public class StudyHashTags {
 
     private static void validateCreateHashTags(Set<StudyHashTag> hashTags) {
         if (Objects.isNull(hashTags) || hashTags.isEmpty()) {
-            throw new IllegalArgumentException("해시태그 값을 입력해주세요.");
+            throw new IllegalArgumentException("해시태그 값을 입력해주세요.", ErrorField.of("hashTags", hashTags));
         }
         if (hashTags.size() > 8) {
-            throw new IllegalArgumentException("해시태그는 최대 8개까지 입력할 수 있습니다.");
+            throw new IllegalArgumentException("해시태그는 최대 8개까지 입력할 수 있습니다.", ErrorField.of("hashTags-size", hashTags.size()));
         }
     }
 
@@ -58,7 +59,7 @@ public class StudyHashTags {
             return;
         }
         if (hashTags.size() > 8) {
-            throw new IllegalArgumentException("해시태그는 최대 8개까지 입력할 수 있습니다.");
+            throw new IllegalArgumentException("해시태그는 최대 8개까지 입력할 수 있습니다.", ErrorField.of("hashTags-size", hashTags.size()));
         }
 
         Set<StudyHashTag> differenceOfSets = new LinkedHashSet<>();
@@ -88,7 +89,7 @@ public class StudyHashTags {
 
     public void validate() {
         if (this.studyHashTags == null || this.studyHashTags.isEmpty()) {
-            throw new IllegalArgumentException("해시태그가 존재하지 않습니다.");
+            throw new IllegalArgumentException("해시태그가 존재하지 않습니다.", ErrorField.of("hashTags", null));
         }
     }
 

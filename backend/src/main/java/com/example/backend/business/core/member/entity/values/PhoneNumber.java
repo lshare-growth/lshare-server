@@ -1,5 +1,7 @@
 package com.example.backend.business.core.member.entity.values;
 
+import com.example.backend.business.core.common.ErrorField;
+
 import javax.persistence.Embeddable;
 import java.util.Objects;
 import java.util.regex.Pattern;
@@ -23,14 +25,14 @@ public class PhoneNumber {
         this.phoneNumber = phoneNumber;
     }
 
-    public static PhoneNumber from(String phoneNumber) {
-        return new PhoneNumber(phoneNumber);
-    }
-
     private void validatePhoneNumber(String phoneNumber) {
         if (!Objects.isNull(phoneNumber) && !pattern.matcher(phoneNumber).matches()) {
-            throw new IllegalArgumentException("올바른 양식의 번호를 입력해주세요.");
+            throw new IllegalArgumentException("올바른 양식의 번호를 입력해주세요.", ErrorField.of("phoneNumber", phoneNumber));
         }
+    }
+
+    public static PhoneNumber from(String phoneNumber) {
+        return new PhoneNumber(phoneNumber);
     }
 
     @Override

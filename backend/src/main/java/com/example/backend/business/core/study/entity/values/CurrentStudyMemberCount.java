@@ -1,5 +1,7 @@
 package com.example.backend.business.core.study.entity.values;
 
+import com.example.backend.business.core.common.ErrorField;
+
 import javax.persistence.Embeddable;
 import java.util.Objects;
 
@@ -21,7 +23,7 @@ public class CurrentStudyMemberCount {
 
     private void validateStudyMemberCount(int maxMemberCount) {
         if (maxMemberCount < 0) {
-            throw new IllegalArgumentException("스터디원은 최소 1명보다 많거나 같아야 합니다.");
+            throw new IllegalArgumentException("스터디원은 최소 1명보다 많거나 같아야 합니다.", ErrorField.of("maxMemberCount", maxMemberCount));
         }
     }
 

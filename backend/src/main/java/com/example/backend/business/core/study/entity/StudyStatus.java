@@ -1,5 +1,7 @@
 package com.example.backend.business.core.study.entity;
 
+import com.example.backend.business.core.common.ErrorField;
+
 import java.util.Arrays;
 import java.util.function.Predicate;
 
@@ -26,7 +28,7 @@ public enum StudyStatus {
         return Arrays.stream(values())
                 .filter(isEqualTo(status))
                 .findAny()
-                .orElseThrow(() -> new IllegalArgumentException("스터디 상태를 찾을 수 없습니다."));
+                .orElseThrow(() -> new IllegalArgumentException("스터디 상태를 찾을 수 없습니다.", ErrorField.of("studyStatus", status)));
     }
 
     private static Predicate<StudyStatus> isEqualTo(String status) {

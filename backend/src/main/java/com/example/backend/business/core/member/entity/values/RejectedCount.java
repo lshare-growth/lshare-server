@@ -22,12 +22,6 @@ public class RejectedCount {
         return new RejectedCount();
     }
 
-    private void validateRejectedCount() {
-        if (this.rejectedCount > MAX_REJECTED_COUNT) {
-            throw new IllegalStateException("요청 가능 횟수를 초과했습니다.");
-        }
-    }
-
     public boolean isOverThree() {
         return this.rejectedCount > MAX_REJECTED_COUNT;
     }

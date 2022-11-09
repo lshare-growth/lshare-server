@@ -1,5 +1,7 @@
 package com.example.backend.business.core.common.values;
 
+import com.example.backend.business.core.common.ErrorField;
+
 import javax.persistence.Embeddable;
 import java.util.Objects;
 
@@ -23,10 +25,10 @@ public class ProfileImageUrl {
 
     private void validateProfileImageUrl(String profileImageUrl) {
         if (Objects.isNull(profileImageUrl)) {
-            throw new IllegalArgumentException("프로필 이미지가 존재하지 않습니다.");
+            throw new IllegalArgumentException("프로필 이미지가 존재하지 않습니다.", ErrorField.of("profileImageUrl", profileImageUrl));
         }
         if (profileImageUrl.length() > MAX_PROFILE_IMAGE_URL_LENGTH) {
-            throw new IllegalArgumentException("프로필 이미지 최대 입력길이를 초과했습니다.");
+            throw new IllegalArgumentException("프로필 이미지 최대 입력길이를 초과했습니다.", ErrorField.of("profileImageUrl", profileImageUrl));
         }
     }
 

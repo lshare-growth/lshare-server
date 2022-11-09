@@ -19,7 +19,10 @@ public enum District implements EnumMapperType {
     private final String type;
     private final String value;
 
-    District(int districtId, String type, String value) {
+    District(int districtId,
+             String type,
+             String value) {
+
         this.districtId = districtId;
         this.type = type;
         this.value = value;

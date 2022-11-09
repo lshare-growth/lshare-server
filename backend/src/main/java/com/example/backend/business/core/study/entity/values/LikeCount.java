@@ -1,5 +1,7 @@
 package com.example.backend.business.core.study.entity.values;
 
+import com.example.backend.business.core.common.ErrorField;
+
 import javax.persistence.Embeddable;
 import java.util.Objects;
 
@@ -43,7 +45,7 @@ public class LikeCount {
 
     private static void validateLikeCount(int likeCount) {
         if (likeCount < 0) {
-            throw new IllegalStateException("좋아요 수는 음수일 수 없습니다.");
+            throw new IllegalStateException("좋아요 수는 음수일 수 없습니다.", ErrorField.of("likeCount", likeCount));
         }
     }
 

@@ -1,5 +1,7 @@
 package com.example.backend.business.core.comment.entity.values;
 
+import com.example.backend.business.core.common.ErrorField;
+
 import javax.persistence.Embeddable;
 import java.util.Objects;
 
@@ -24,10 +26,10 @@ public class CommentParentId {
 
     public void validateCommentParentId(Long commentParentId) {
         if (Objects.isNull(commentParentId)) {
-            throw new IllegalArgumentException("부모 아이디가 존재하지 않습니다.");
+            throw new IllegalArgumentException("부모 아이디가 존재하지 않습니다.", ErrorField.of("commentParentId", commentParentId));
         }
         if (commentParentId < 0) {
-            throw new IllegalArgumentException("부모 아이디는 음수일 수 없습니다.");
+            throw new IllegalArgumentException("부모 아이디는 음수일 수 없습니다.", ErrorField.of("commentParentId", commentParentId));
         }
     }
 

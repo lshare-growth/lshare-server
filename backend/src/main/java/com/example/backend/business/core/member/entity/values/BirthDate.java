@@ -1,5 +1,7 @@
 package com.example.backend.business.core.member.entity.values;
 
+import com.example.backend.business.core.common.ErrorField;
+
 import javax.persistence.Embeddable;
 import java.time.LocalDate;
 import java.util.Objects;
@@ -22,7 +24,7 @@ public class BirthDate {
 
     private void validateBirthDate(LocalDate birthDate) {
         if (!Objects.isNull(birthDate) && birthDate.isAfter(LocalDate.now())) {
-            throw new IllegalArgumentException("올바른 출생일을 입력해주세요.");
+            throw new IllegalArgumentException("올바른 출생일을 입력해주세요.", ErrorField.of("birthDate", birthDate));
         }
     }
 

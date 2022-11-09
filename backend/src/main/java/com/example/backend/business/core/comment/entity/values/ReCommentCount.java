@@ -1,5 +1,7 @@
 package com.example.backend.business.core.comment.entity.values;
 
+import com.example.backend.business.core.common.ErrorField;
+
 import javax.persistence.Embeddable;
 import java.util.Objects;
 
@@ -41,7 +43,7 @@ public class ReCommentCount {
 
     private static void validateReCommentCount(int decreasedCommentCount) {
         if (decreasedCommentCount < ZERO) {
-            throw new IllegalStateException("대댓글수는 음수일 수 없습니다.");
+            throw new IllegalStateException("대댓글수는 음수일 수 없습니다.", ErrorField.of("reCommentCount", decreasedCommentCount));
         }
     }
 

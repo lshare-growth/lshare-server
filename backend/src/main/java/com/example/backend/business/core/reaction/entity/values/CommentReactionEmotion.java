@@ -1,5 +1,6 @@
 package com.example.backend.business.core.reaction.entity.values;
 
+import com.example.backend.business.core.common.ErrorField;
 import com.example.backend.business.core.reaction.entity.CommentReactionType;
 
 import javax.persistence.Embeddable;
@@ -26,7 +27,7 @@ public class CommentReactionEmotion {
 
     private void validateEmotion(String emotion) {
         if (Objects.isNull(emotion) || !emotions.contains(emotion)) {
-            throw new IllegalArgumentException("올바른 이모티콘을 입력해주세요.");
+            throw new IllegalArgumentException("올바른 이모티콘을 입력해주세요.", ErrorField.of("emotion", emotion));
         }
     }
 

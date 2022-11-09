@@ -1,5 +1,7 @@
 package com.example.backend.business.core.comment.entity.values;
 
+import com.example.backend.business.core.common.ErrorField;
+
 import javax.persistence.Embeddable;
 import java.util.Objects;
 
@@ -21,10 +23,10 @@ public class CommentWriter {
 
     private void validateCommentWriter(String writer) {
         if (Objects.isNull(writer) || writer.isBlank()) {
-            throw new IllegalArgumentException("작성자가 존재하지 않습니다.");
+            throw new IllegalArgumentException("작성자가 존재하지 않습니다.", ErrorField.of("writer", writer));
         }
         if (writer.length() > 39) {
-            throw new IllegalArgumentException("입력 가능한 이름의 최대길이를 초과했습니다.");
+            throw new IllegalArgumentException("입력 가능한 이름의 최대길이를 초과했습니다.", ErrorField.of("writer", writer));
         }
     }
 

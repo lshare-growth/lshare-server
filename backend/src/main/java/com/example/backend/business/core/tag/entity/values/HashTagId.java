@@ -1,5 +1,7 @@
 package com.example.backend.business.core.tag.entity.values;
 
+import com.example.backend.business.core.common.ErrorField;
+
 import javax.persistence.Embeddable;
 import java.io.Serializable;
 import java.util.Objects;
@@ -25,7 +27,9 @@ public class HashTagId implements Serializable {
     }
 
     private void validateHashTagId(Long hashTagId) {
-        Objects.requireNonNull(hashTagId, "해시태그 PK가 존재하지 않습니다.");
+        if (Objects.isNull(hashTagId)) {
+            throw new IllegalArgumentException("해시태그 아이디가 존재하지 않습니다.", ErrorField.of("hashTagId", hashTagId));
+        }
     }
 
     public Long getHashTagId() {

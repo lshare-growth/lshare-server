@@ -1,5 +1,7 @@
 package com.example.backend.business.core.comment.entity.values.pojo;
 
+import com.example.backend.business.core.common.ErrorField;
+
 import java.util.Objects;
 
 public class CommentId {
@@ -16,7 +18,7 @@ public class CommentId {
             throw new IllegalArgumentException();
         }
         if (commentId <= 0) {
-            throw new IllegalArgumentException("댓글 아이디는 0 또는 음수일 수 없습니다.");
+            throw new IllegalArgumentException("댓글 아이디는 0 또는 음수일 수 없습니다.", ErrorField.of("commentId", commentId));
         }
     }
 

@@ -1,5 +1,7 @@
 package com.example.backend.business.core.study.entity.values;
 
+import com.example.backend.business.core.common.ErrorField;
+
 import javax.persistence.Embeddable;
 import java.util.Objects;
 
@@ -21,7 +23,7 @@ public class StudyId {
 
     private void validateStudyId(Long studyId) {
         if (Objects.isNull(studyId) || studyId <= 0L) {
-            throw new IllegalArgumentException("올바른 스터디 아이디를 입력해주세요.");
+            throw new IllegalArgumentException("올바른 스터디 아이디를 입력해주세요.", ErrorField.of("studyId", studyId));
         }
     }
 

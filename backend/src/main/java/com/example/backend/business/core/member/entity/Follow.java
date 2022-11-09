@@ -1,5 +1,6 @@
 package com.example.backend.business.core.member.entity;
 
+import com.example.backend.business.core.common.ErrorField;
 import com.example.backend.business.core.common.values.CreatedAt;
 import com.fasterxml.uuid.Generators;
 
@@ -46,7 +47,7 @@ public class Follow {
 
     private void validateFollow(Member source, Member target) {
         if (source.equals(target)) {
-            throw new IllegalStateException("팔로잉 주체와 대상이 같을 수 없습니다.");
+            throw new IllegalStateException("팔로잉 주체와 대상이 같을 수 없습니다.", ErrorField.of("target", target));
         }
     }
 

@@ -1,5 +1,7 @@
 package com.example.backend.business.core.tag.entity.values;
 
+import com.example.backend.business.core.common.ErrorField;
+
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -7,7 +9,6 @@ import java.util.stream.Collectors;
 
 public class TagNames {
 
-    private static final int MAX_HASH_TAG_COUNT = 8;
     private final Set<TagName> tagNames;
 
     public TagNames(List<String> tagNames) {
@@ -17,10 +18,10 @@ public class TagNames {
 
     private void validateTagNames(List<String> tagNames) {
         if (Objects.isNull(tagNames) || tagNames.isEmpty()) {
-            throw new IllegalArgumentException("해시태그 값을 입력해주세요.");
+            throw new IllegalArgumentException("해시태그 값을 입력해주세요.", ErrorField.of("tagNames", tagNames));
         }
-        if (tagNames.size() > MAX_HASH_TAG_COUNT) {
-            throw new IllegalArgumentException("해시태그는 최대 8개까지 입력할 수 있습니다.");
+        if (tagNames.size() > 8) {
+            throw new IllegalArgumentException("해시태그는 최대 8개까지 입력할 수 있습니다.", ErrorField.of("tagNames-length", tagNames.size()));
         }
     }
 
@@ -36,12 +37,6 @@ public class TagNames {
 
     public Set<TagName> getTagNames() {
         return tagNames;
-    }
-
-    public Set<String> getTagNamesAsString() {
-        return tagNames.stream()
-                .map(String::valueOf)
-                .collect(Collectors.toUnmodifiableSet());
     }
 
     @Override

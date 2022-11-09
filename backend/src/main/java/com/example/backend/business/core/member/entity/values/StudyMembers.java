@@ -1,5 +1,6 @@
 package com.example.backend.business.core.member.entity.values;
 
+import com.example.backend.business.core.common.ErrorField;
 import com.example.backend.business.core.member.entity.Member;
 import com.example.backend.business.core.study.entity.Study;
 import com.example.backend.business.core.study.entity.StudyMember;
@@ -62,7 +63,7 @@ public class StudyMembers {
 
     public void validateStudyMembers(StudyMember studyMember) {
         if (Objects.isNull(studyMember)) {
-            throw new IllegalArgumentException("스터디 멤버가 존재하지 않습니다.");
+            throw new IllegalArgumentException("스터디 멤버가 존재하지 않습니다.", ErrorField.of("studyMember", studyMember));
         }
         if (studyMembers.contains(studyMember)) {
             throw new DuplicatedStudyMemberException("이미 존재하는 스터디멤버입니다.");
@@ -88,14 +89,6 @@ public class StudyMembers {
 
     public int getStudyMembersSize() {
         return studyMembers.size();
-    }
-
-    public void validateDuplicatedMember(Member newMember) {
-        for (StudyMember studyMember : this.studyMembers) {
-            if (studyMember.getMember().equals(newMember)) {
-                throw new DuplicatedStudyMemberException();
-            }
-        }
     }
 
     public String getStudyLeaderNickName() {

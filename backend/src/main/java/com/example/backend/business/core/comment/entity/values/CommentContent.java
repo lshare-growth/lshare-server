@@ -1,5 +1,7 @@
 package com.example.backend.business.core.comment.entity.values;
 
+import com.example.backend.business.core.common.ErrorField;
+
 import javax.persistence.Embeddable;
 import java.util.Objects;
 
@@ -21,17 +23,17 @@ public class CommentContent {
         this.content = content;
     }
 
-    public static CommentContent from(String commentContent) {
-        return new CommentContent(commentContent);
-    }
-
     private void validateCommentContent(String content) {
         if (Objects.isNull(content) || content.isBlank()) {
-            throw new IllegalArgumentException("댓글 내용은 공백일 수 없습니다.");
+            throw new IllegalArgumentException("댓글 내용은 공백일 수 없습니다.", ErrorField.of("content", content));
         }
         if (content.length() > MAX_COMMENT_CONTENT_LENGTH) {
-            throw new IllegalArgumentException("최대 입력 가능한 내용을 초과하셨습니다.");
+            throw new IllegalArgumentException("최대 입력 가능한 내용을 초과하셨습니다.", ErrorField.of("content", content));
         }
+    }
+
+    public static CommentContent from(String commentContent) {
+        return new CommentContent(commentContent);
     }
 
     public static CommentContent getEmptyCommentContentAsValue() {
