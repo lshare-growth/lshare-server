@@ -1,14 +1,13 @@
 package com.example.backend.business.core.tag.entity.values;
 
+import com.example.backend.business.core.common.ErrorField;
+
 import javax.persistence.Embeddable;
 import java.io.Serializable;
 import java.util.Objects;
 
 @Embeddable
 public class TagName implements Serializable {
-
-    private static final int MIN_TAG_NAME_LENGTH = 1;
-    private static final int MAX_TAG_NAME_LENGTH = 15;
 
     private String tagName;
 
@@ -25,13 +24,13 @@ public class TagName implements Serializable {
 
     private void validateTagName(String tagName) {
         if (Objects.isNull(tagName) || tagName.isBlank()) {
-            throw new IllegalArgumentException("태그값을 입력해주세요.");
+            throw new IllegalArgumentException("태그값을 입력해주세요.", ErrorField.of("tagName", tagName));
         }
-        if (tagName.length() <= MIN_TAG_NAME_LENGTH) {
-            throw new IllegalArgumentException("최소 한 글자 이상의 태그를 입력해주세요.");
+        if (tagName.length() <= 1) {
+            throw new IllegalArgumentException("최소 한 글자 이상의 태그를 입력해주세요.", ErrorField.of("tagName", tagName));
         }
-        if (tagName.length() > MAX_TAG_NAME_LENGTH) {
-            throw new IllegalArgumentException("입력 가능한 태그의 최대길이를 초과했습니다.");
+        if (tagName.length() > 15) {
+            throw new IllegalArgumentException("입력 가능한 태그의 최대길이를 초과했습니다.", ErrorField.of("tagName", tagName));
         }
     }
 
