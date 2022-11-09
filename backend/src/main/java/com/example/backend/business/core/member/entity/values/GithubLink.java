@@ -1,5 +1,7 @@
 package com.example.backend.business.core.member.entity.values;
 
+import com.example.backend.business.core.common.ErrorField;
+
 import javax.persistence.Embeddable;
 import java.util.Objects;
 
@@ -28,7 +30,7 @@ public class GithubLink {
 
     private void validateGithubLink(String githubLink) {
         if (githubLink.length() > 60) {
-            throw new IllegalArgumentException("올바르지 않은 깃허브 링크입니다.");
+            throw new IllegalArgumentException("올바르지 않은 깃허브 링크입니다.", ErrorField.of("githubLink", githubLink));
         }
     }
 

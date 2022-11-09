@@ -1,5 +1,7 @@
 package com.example.backend.business.core.member.entity.values;
 
+import com.example.backend.business.core.common.ErrorField;
+
 import javax.persistence.Embeddable;
 import java.util.Objects;
 
@@ -23,10 +25,10 @@ public class GithubId {
 
     private void validateGithubId(String githubId) {
         if (Objects.isNull(githubId) || githubId.isBlank()) {
-            throw new IllegalArgumentException("깃허브 아이디를 입력해주세요.");
+            throw new IllegalArgumentException("깃허브 아이디를 입력해주세요.", ErrorField.of("githubId", githubId));
         }
         if (githubId.length() > MAX_GITHUBID_LENGTH) {
-            throw new IllegalArgumentException("아이디 최대 입력길이를 초과했습니다.");
+            throw new IllegalArgumentException("아이디 최대 입력길이를 초과했습니다.", ErrorField.of("githubId", githubId));
         }
     }
 

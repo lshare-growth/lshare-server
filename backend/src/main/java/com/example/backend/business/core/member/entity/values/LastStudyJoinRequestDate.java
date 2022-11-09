@@ -24,7 +24,9 @@ public class LastStudyJoinRequestDate {
     }
 
     public boolean isUnderHour() {
-        return this.lastStudyJoinRequestDate.isBefore(this.lastStudyJoinRequestDate.plus(1, ChronoUnit.HOURS));
+        return this.lastStudyJoinRequestDate.isBefore(
+                this.lastStudyJoinRequestDate.plus(1, ChronoUnit.HOURS)
+        );
     }
 
     @Override

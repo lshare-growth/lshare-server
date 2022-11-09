@@ -1,5 +1,7 @@
 package com.example.backend.business.core.member.entity.values;
 
+import com.example.backend.business.core.common.ErrorField;
+
 import javax.persistence.Embeddable;
 import java.util.Objects;
 
@@ -40,7 +42,7 @@ public class FollowerCount {
     public int decraseAndGet() {
         int afterUnfollowCount = followerCount - 1;
         if (afterUnfollowCount < 0) {
-            throw new IllegalStateException();
+            throw new IllegalStateException("팔로우 수는 음수일 수 없습니다.", ErrorField.of("followCount", followerCount));
         }
         return afterUnfollowCount;
     }

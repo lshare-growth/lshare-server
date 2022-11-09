@@ -1,5 +1,7 @@
 package com.example.backend.business.core.member.entity.values;
 
+import com.example.backend.business.core.common.ErrorField;
+
 import javax.persistence.Embeddable;
 import java.util.Objects;
 
@@ -31,8 +33,8 @@ public class Introduction {
         if (Objects.isNull(introduction)) {
             return;
         }
-        if (Objects.nonNull(introduction) && introduction.length() > MAX_INTRODUCTION_LENGTH) {
-            throw new IllegalArgumentException("입력 가능한 자기소개 최대글자수를 초과했습니다.");
+        if (introduction.length() > MAX_INTRODUCTION_LENGTH) {
+            throw new IllegalArgumentException("입력 가능한 자기소개 최대글자수를 초과했습니다.", ErrorField.of("introduction", introduction));
         }
     }
 

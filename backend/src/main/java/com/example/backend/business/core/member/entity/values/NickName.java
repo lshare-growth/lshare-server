@@ -1,5 +1,7 @@
 package com.example.backend.business.core.member.entity.values;
 
+import com.example.backend.business.core.common.ErrorField;
+
 import javax.persistence.Embeddable;
 import java.util.Objects;
 
@@ -19,18 +21,18 @@ public class NickName {
         this.nickName = nickName;
     }
 
-    private void validateName(String name) {
-        if (Objects.isNull(name) || name.isBlank()) {
-            throw new IllegalArgumentException("회원 이름은 공백일 수 없습니다.");
+    private void validateName(String nickName) {
+        if (Objects.isNull(nickName) || nickName.isBlank()) {
+            throw new IllegalArgumentException("회원 이름은 공백일 수 없습니다.", ErrorField.of("nickName", nickName));
         }
-        if (name.length() > 39) {
-            throw new IllegalArgumentException("입력 가능한 이름의 최대길이를 초과했습니다.");
+        if (nickName.length() > 39) {
+            throw new IllegalArgumentException("입력 가능한 이름의 최대길이를 초과했습니다.", ErrorField.of("nickName", nickName));
         }
 
-        String blankDeletedNickName = name.replaceAll(" ", "");
+        String blankDeletedNickName = nickName.replaceAll(" ", "");
 
-        if (!blankDeletedNickName.equals(name)) {
-            throw new IllegalArgumentException("공백은 존재할 수 없습니다.");
+        if (!blankDeletedNickName.equals(nickName)) {
+            throw new IllegalArgumentException("닉네임에 공백은 존재할 수 없습니다.", ErrorField.of("nickName", nickName));
         }
     }
 

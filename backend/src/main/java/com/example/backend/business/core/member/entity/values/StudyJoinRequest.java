@@ -1,5 +1,6 @@
 package com.example.backend.business.core.member.entity.values;
 
+import com.example.backend.business.core.common.ErrorField;
 import com.example.backend.business.core.member.entity.Member;
 import com.example.backend.business.core.study.entity.values.StudyId;
 import com.example.backend.common.exception.BusinessException;
@@ -88,10 +89,10 @@ public class StudyJoinRequest {
             throw new DuplicatedStudyMemberException("이미 승인된 멤버입니다.");
         }
         if (isRequestRejectedOverThree(member)) {
-            throw new IllegalArgumentException("스터디 거절 횟수 세번을 초과했습니다.");
+            throw new IllegalArgumentException("스터디 거절 횟수 세번을 초과했습니다.", ErrorField.of("member", member));
         }
         if (isRejectedUnderOneHour(member)) {
-            throw new IllegalArgumentException("스터디 가입을 신청한지 한시간이 지나지 않았습니다.");
+            throw new IllegalArgumentException("스터디 가입을 신청한지 한시간이 지나지 않았습니다.", ErrorField.of("member", member));
         }
     }
 
