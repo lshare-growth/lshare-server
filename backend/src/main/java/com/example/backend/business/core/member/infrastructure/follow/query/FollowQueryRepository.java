@@ -42,7 +42,7 @@ public class FollowQueryRepository {
                     .fetchJoin()
                     .where(follow.target.memberId.eq(memberId.getMemberId()))
                     .limit(cursor.getPageSize() + 1)
-                    .orderBy(member.memberId.desc())
+                    .orderBy(follow.createdAt.createdAt.desc())
                     .fetch();
         }
         return queryFactory.selectFrom(follow)
@@ -55,7 +55,7 @@ public class FollowQueryRepository {
                                 .and(follow.source.memberId.lt(cursor.getNext()))
                 )
                 .limit(cursor.getPageSize() + 1)
-                .orderBy(member.memberId.desc())
+                .orderBy(follow.target.memberId.desc())
                 .fetch();
     }
 
@@ -94,7 +94,7 @@ public class FollowQueryRepository {
                                 .and(follow.target.memberId.lt(cursor.getNext()))
                 )
                 .limit(cursor.getPageSize() + 1)
-                .orderBy(member.memberId.desc())
+                .orderBy(follow.target.memberId.desc())
                 .fetch();
     }
 }
