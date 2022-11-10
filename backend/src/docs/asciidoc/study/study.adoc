@@ -1,0 +1,42 @@
+=== 목록
+
+[cols=*]
+|===
+| 기능 | API
+
+| <<스터디 개설>> | POST /api/studies
+| <<스터디 삭제>> | DELETE /api/studies/{studyId}
+
+|===
+
+=== 스터디 개설
+
+API : POST /api/studies
+
+스터디 개설 API
+
+==== 200 OK
+
+===== Request
+
+operation::study/create[snippets='http-request,request-body']
+
+===== Response
+
+operation::study/create[snippets='http-response,response-fields']
+
+=== 스터디 삭제
+
+API : DELETE /api/studies/{studyId}
+
+스터디 삭제 API
+
+==== 200 OK
+
+===== Request
+
+operation::study/delete[snippets='path-parameters']
+
+===== Response
+
+operation::study/delete[snippets='http-response']

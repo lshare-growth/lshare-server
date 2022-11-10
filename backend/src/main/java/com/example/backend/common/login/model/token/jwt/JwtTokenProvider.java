@@ -23,7 +23,7 @@ public class JwtTokenProvider implements TokenProvider {
     private static final String PROFILE_IMAGE_URL = "profileImageUrl";
     private static final String NOTIFICATION_CHECK = "notificationCheck";
 
-    private static final long FIFTEEN_MINUTES = 1000 * 60 * 15;
+    private static final long FIFTEEN_MINUTES = 1000 * 60 * 60*12;
     private static final long TWO_WEEKS = 1000 * 60 * 12 * 24 * 7;
 
     @Value("${jwt.secret-key}")

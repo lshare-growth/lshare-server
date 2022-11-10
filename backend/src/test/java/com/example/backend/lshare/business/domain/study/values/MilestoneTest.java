@@ -44,13 +44,13 @@ class MilestoneTest {
             );
         }
 
-        @Test
-        @DisplayName("당일날 마감되는 스터디는 정상적으로 개설된다.")
-        void 시작일이_오늘_이전일_경우_테스트() {
-            LocalDate startDate = LocalDate.now().minusDays(30);
-
-            assertThrows(IllegalArgumentException.class, () -> StartDate.from(startDate));
-        }
+//        @Test
+//        @DisplayName("당일날 마감되는 스터디는 정상적으로 개설된다.")
+//        void 시작일이_오늘_이전일_경우_테스트() {
+//            LocalDate startDate = LocalDate.now().minusDays(30);
+//
+//            assertThrows(IllegalArgumentException.class, () -> StartDate.from(startDate));
+//        }
 
         @Test
         @DisplayName("당일날 마감되는 스터디는 정상적으로 개설된다.")

@@ -1,0 +1,110 @@
+=== 목록
+
+[cols=*]
+|===
+| 기능 | API
+
+| <<댓글 작성>> | POST /api/comments
+| <<댓글 수정>> | PUT /api/comments/{commentId}
+| <<댓글 삭제>> | DELETE /api/comments/{commentId}
+| <<대댓글 작성>> | POST /api/comments/{commentId}/recomments
+| <<대댓글 수정>> | PUT /api/comments/{commentParentId}/recomments/{commentId}
+| <<대댓글 삭제>> | DELETE /api/comments/{commentParentId}/recomments/{commentId}
+
+|===
+
+=== 댓글 작성
+
+API : `POST /api/comments`
+
+댓글 작성 API
+
+==== 200 OK
+
+===== Request
+
+operation::comment/comment-write[snippets='http-request,request-body']
+
+===== Response
+
+operation::comment/comment-write[snippets='http-response,response-fields']
+
+=== 댓글 수정
+
+API : PUT `/api/comments/{commentId}`
+
+댓글 수정 API
+
+==== 200 OK
+
+===== Request
+
+operation::comment/comment-update[snippets='http-request,path-parameters']
+
+===== Response
+
+operation::comment/comment-update[snippets='http-response']
+
+=== 댓글 삭제
+
+API : DELETE `/api/comments/{commentId}`
+
+댓글 삭제 API
+
+==== 204 No Content
+
+===== Request
+
+operation::comment/comment-delete[snippets='http-request,path-parameters']
+
+===== Response
+
+operation::comment/comment-delete[snippets='http-response']
+
+=== 대댓글 작성
+
+API : `POST /api/comments/{commentId}/recomments`
+
+댓글 작성 API
+
+==== 200 OK
+
+===== Request
+
+operation::comment/re-comment-write[snippets='http-request,request-body']
+
+===== Response
+
+operation::comment/re-comment-write[snippets='http-response,response-fields']
+
+=== 대댓글 수정
+
+API : `PUT /api/comments/{commentParentId}/recomments/{commentId}`
+
+대댓글 수정 API
+
+==== 200 OK
+
+===== Request
+
+operation::comment/recomment-update[snippets='http-request,request-body']
+
+===== Response
+
+operation::comment/recomment-update[snippets='http-response']
+
+=== 대댓글 삭제
+
+API : `DELETE /api/comments/{commentParentId}/recomments/{commentId}`
+
+대댓글 삭제 API
+
+==== 204 No Content
+
+===== Request
+
+operation::comment/recomment-delete[snippets='http-request,request-body']
+
+===== Response
+
+operation::comment/recomment-delete[snippets='http-response']
